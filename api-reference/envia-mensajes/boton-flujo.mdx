@@ -1,0 +1,140 @@
+---
+title: 'Whatsapp Flows'
+description: 'Envía un mensaje con un botón que abre un WhatsApp Flow'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"flow"`.
+</ParamField>
+
+<ParamField body="title" type="string" required>
+  Encabezado del mensaje.
+</ParamField>
+
+<ParamField body="text" type="string" required>
+  Contenido del mensaje.
+</ParamField>
+
+<ParamField body="caption" type="string" required>
+  Texto de pie de página.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+<ParamField body="parameters" type="object" required>
+  Configuración del botón de flujo.
+  
+  <Expandable title="Parámetros del Flujo">
+    <ParamField body="parameters.flow_id" type="string" required>
+      Identificador único del flujo a abrir.
+    </ParamField>
+    
+    <ParamField body="parameters.flow_cta" type="string" required>
+      Texto de llamada a la acción mostrado en el botón del flujo.
+    </ParamField>
+    
+    <ParamField body="parameters.flow_name" type="string" required>
+      Nombre del flujo.
+    </ParamField>
+    
+    <ParamField body="parameters.flow_action_payload" type="object" required>
+      Datos de carga útil para la acción del flujo. Este objeto puede contener cualquier dato que quieras pasar al flujo.
+      
+      <Expandable title="Ejemplo de Payload">
+        ```json
+        {
+          "screen": "RECOMMEND"
+        }
+        ```
+      </Expandable>
+    </ParamField>
+    
+    <ParamField body="parameters.mode" type="string" required>
+      Modo del flujo. Debe ser `"draft"` o `"published"`.
+    </ParamField>
+    
+    <ParamField body="parameters.flow_action" type="string" required>
+      Acción a realizar. Actualmente solo se soporta `"navigate"`.
+    </ParamField>
+    
+    <ParamField body="parameters.flow_message_version" type="string" required>
+      Versión del mensaje de flujo. Usa `"3"` para la versión más reciente.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "flow",
+    "title": "Hola",
+    "text": "Completa este flujo para comenzar",
+    "caption": "Jelou",
+    "userId": "USER_ID",
+    "parameters": {
+      "flow_id": "FLOW_ID",
+      "flow_cta": "Iniciar Flujo",
+      "flow_name": "Flujo de Bienvenida",
+      "flow_action_payload": {
+        "screen": "RECOMMEND"
+      },
+      "mode": "draft",
+      "flow_action": "navigate",
+      "flow_message_version": "3"
+    }
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Mejores Prácticas
+
+<Note>
+**Flujos Complejos:** Usa botones de flujo para interacciones complejas de múltiples pasos que requieren entradas de formulario, selecciones o experiencias guiadas. Los flujos proporcionan una experiencia nativa de WhatsApp sin salir del chat.
+</Note>
+
+## Casos de Uso
+
+- Formularios de registro o encuestas
+- Procesos de compra multi-paso
+- Configuraciones guiadas
+- Experiencias interactivas complejas
+

@@ -1,0 +1,134 @@
+---
+title: 'Historial de chat'
+description: 'Consulta el historial de mensajes de un bot'
+---
+
+## Descripción
+
+Obtén el historial de conversaciones de un bot para auditar interacciones, analizar métricas o depurar flujos. Este endpoint retorna los mensajes enviados y recibidos con soporte para paginación y filtros de tiempo.
+
+## Endpoint
+
+```
+GET https://api.jelou.ai/v1/external/messages/history/{botId}
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot del que deseas consultar el historial.
+</ParamField>
+
+## Parámetros de Consulta
+
+<ParamField query="limit" type="integer" required>
+  Número de mensajes por página. Utiliza este valor para controlar la cantidad de resultados retornados por solicitud.
+</ParamField>
+
+<ParamField query="page" type="integer" required>
+  Número de página que deseas consultar. Se combina con `limit` para recorrer el historial completo.
+</ParamField>
+
+<ParamField query="startAt" type="string">
+  Fecha inicial del rango a consultar en formato ISO 8601 (`YYYY-MM-DDThh:mm:ssZ`). Si no se especifica, se utilizan los registros más recientes disponibles.
+</ParamField>
+
+<ParamField query="endAt" type="string">
+  Fecha final del rango a consultar en formato ISO 8601 (`YYYY-MM-DDThh:mm:ssZ`). Úsalo junto con `startAt` para acotar el intervalo.
+</ParamField>
+
+<ParamField query="clientId" type="string">
+  Filtra el historial por un `clientId` específico asociado a tus integraciones.
+</ParamField>
+
+<ParamField query="messageId" type="string">
+  Devuelve la conversación que contiene el mensaje con este identificador.
+</ParamField>
+
+<Tip>
+Si omites los campos opcionales, la API aplicará valores predeterminados para entregar la primera página con los mensajes más recientes.
+</Tip>
+
+## Ejemplo de Solicitud
+
+```bash cURL
+curl --request GET \
+  --url 'https://api.jelou.ai/v1/external/messages/history/BOT_ID?limit=10&page=1' \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>'
+```
+
+## Respuesta
+
+<ResponseField name="pagination" type="object" required>
+  Información de paginación asociada a la consulta.
+
+  <Expandable title="Campos de pagination">
+    - `limit`: Número de mensajes retornados por página.
+    - `page`: Página actual de la consulta.
+    - `total`: Cantidad total de mensajes que cumplen con los filtros.
+    - `offset`: Desplazamiento aplicado según la paginación.
+    - `totalPages`: Total de páginas disponibles para la consulta.
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="_metadata" type="object">
+  Metadatos adicionales del resultado. Por defecto se entrega como un objeto vacío.
+</ResponseField>
+
+<ResponseField name="results" type="array" required>
+  Listado de mensajes que cumplen con los filtros aplicados.
+
+  <Expandable title="Estructura de cada elemento en results">
+    - `recipient`: Objeto con la información del destinatario (`id`, `names`).
+    - `sender`: Objeto con la información del remitente (`id`, `name`, `type`).
+    - `by`: Indica si el mensaje fue enviado por el `bot` o por el `user`.
+    - `messageId`: Identificador único del mensaje dentro del historial.
+    - `status`: Estado del mensaje dentro del flujo de entrega (por ejemplo, `DELIVERED_USER`).
+    - `bubble`: Objeto que describe el contenido del mensaje (`type`, `text`, entre otros campos dependiendo del tipo).
+    - `createdAt`: Marca de tiempo en formato ISO 8601 con la fecha de creación.
+  </Expandable>
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "pagination": {
+    "limit": 10,
+    "page": 1,
+    "total": 1,
+    "offset": 0,
+    "totalPages": 1
+  },
+  "_metadata": {},
+  "results": [
+    {
+      "recipient": {
+        "id": "1234567890",
+        "names": "John Doe"
+      },
+      "sender": {
+        "id": "bot-12345-67890-abcde-fghij",
+        "name": "Your Company Bot",
+        "type": "Whatsapp"
+      },
+      "by": "bot",
+      "messageId": "msg-12345-67890-4a38-abcde-fghij",
+      "status": "DELIVERED_USER",
+      "bubble": {
+        "type": "TEXT",
+        "text": "Hello, welcome to Jelou"
+      },
+      "createdAt": "2025-01-15T10:30:00.000Z"
+    }
+  ]
+}
+```
+
+## Errores Comunes
+
+- `401` - Credenciales inválidas o faltantes (`Authentication failed`).
+- `404` - Bot no encontrado (`BOT_NOT_FOUND`).
+- `422` - La solicitud contiene parámetros inválidos (`VALIDATOR_ERROR`).
+- `500` - Error interno del servidor (`UNKNOWN_ERROR`).
+

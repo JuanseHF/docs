@@ -1,0 +1,103 @@
+---
+title: 'Respuestas Rápidas'
+description: 'Envía un mensaje con botones de respuesta rápida'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"quick_reply"`.
+</ParamField>
+
+<ParamField body="text" type="string" required>
+  Contenido del mensaje enviado al cliente.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+<ParamField body="title" type="string">
+  Título del mensaje. Opcional, máximo 20 caracteres.
+</ParamField>
+
+<ParamField body="quick_replies" type="array" required>
+  Array de botones de respuesta rápida. Mínimo 1, máximo 3 botones.
+  
+  <Expandable title="Propiedades de Respuesta Rápida">
+    <ParamField body="quick_replies[].title" type="string" required>
+      Texto mostrado en el botón de respuesta rápida. Máximo 20 caracteres. No puede estar vacío, debe ser único dentro del mensaje, y no soporta emojis ni markdown.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Restricciones
+
+- **Respuestas Rápidas**: Mínimo 1, máximo 3 botones
+- **Título**: Opcional, máximo 20 caracteres
+- **Título del Botón**: Máximo 20 caracteres, no puede estar vacío, debe ser único, sin emojis ni markdown
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "quick_reply",
+    "text": "¿Te gustaría continuar?",
+    "title": "Pregunta",
+    "quick_replies": [
+      {
+        "title": "Sí"
+      },
+      {
+        "title": "No"
+      },
+      {
+        "title": "Tal vez"
+      }
+    ],
+    "userId": "USER_ID"
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Casos de Uso
+
+- Preguntas de sí/no
+- Confirmaciones simples
+- Opciones binarias
+- Respuestas rápidas a preguntas frecuentes
+

@@ -1,0 +1,94 @@
+---
+title: 'Imagen'
+description: 'Envía una imagen con texto opcional'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"image"`.
+</ParamField>
+
+<ParamField body="mediaUrl" type="string" required>
+  URL pública HTTPS de la imagen a enviar. Debe ser directamente accesible.
+</ParamField>
+
+<ParamField body="text" type="string">
+  Mensaje opcional que acompaña la imagen.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+## Formatos y Límites de Tamaño
+
+| Tipo de Medio | Formatos Soportados | Límite de Tamaño |
+|---------------|---------------------|------------------|
+| **Imagen** | `image/jpeg`, `image/png` | 5MB |
+
+## Requisitos de URL
+
+<Warning>
+La URL debe ser públicamente accesible vía HTTPS, no debe requerir autenticación, y debe apuntar directamente al archivo (no a una página HTML).
+</Warning>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "image",
+    "mediaUrl": "https://example.com/imagen.jpg",
+    "text": "Mira esta imagen",
+    "userId": "USER_ID"
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Errores Comunes
+
+- `INVALID_MEDIA_URL` - La URL de la imagen es inválida o inaccesible
+- `MEDIA_TOO_LARGE` - La imagen excede el límite de 5MB
+- `UNSUPPORTED_MEDIA_TYPE` - El formato de imagen no es soportado
+
+## Casos de Uso
+
+- Compartir fotos de productos
+- Enviar menús visuales
+- Mostrar instrucciones visuales
+- Compartir capturas de pantalla
+

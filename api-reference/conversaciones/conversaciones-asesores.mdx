@@ -1,0 +1,155 @@
+---
+title: 'Conversaciones de asesores'
+description: 'Consulta las conversaciones atendidas por asesores humanos'
+---
+
+## Descripción
+
+Recupera las conversaciones que fueron atendidas por un asesor humano para analizar tiempos de respuesta, estados de cierre y asignaciones. El endpoint entrega metadatos de operadores, usuarios y bots involucrados dentro de un rango de fechas definido.
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/metrics/conversations/attended/external
+```
+
+## Parámetros de Consulta
+
+<ParamField query="limit" type="integer">
+  Número máximo de conversaciones por página. Si no se indica, el valor predeterminado es `10`.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="startAt" type="string" required>
+  Fecha inicial del rango de búsqueda en formato ISO 8601 (`YYYY-MM-DDThh:mm:ss±hh:mm`). Define desde cuándo deseas consultar las conversaciones atendidas.
+</ParamField>
+
+<ParamField body="endAt" type="string" required>
+  Fecha final del rango de búsqueda en formato ISO 8601 (`YYYY-MM-DDThh:mm:ss±hh:mm`). Debe ser posterior a `startAt`.
+</ParamField>
+
+<ParamField body="getJson" type="boolean" required>
+  Debe ser `true` para recibir la respuesta en formato JSON estructurado.
+</ParamField>
+
+<Tip>
+Usa ventanas de tiempo acotadas para optimizar la consulta y evita rangos demasiado amplios si manejas altos volúmenes de conversaciones.
+</Tip>
+
+## Ejemplo de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url 'https://api.jelou.ai/v1/metrics/conversations/attended/external?limit=10' \
+  --header 'Authorization: <clientId>:<clientSecret>' \
+  --header 'content-type: application/json;charset=UTF-8' \
+  --data '{
+    "startAt": "2025-01-01T00:00:00-05:00",
+    "endAt": "2025-01-01T23:59:59-05:00",
+    "getJson": true
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="message" type="array" required>
+  Confirmación de la operación realizada por la API.
+</ResponseField>
+
+<ResponseField name="status" type="string" required>
+  Resultado general de la consulta (`success` en caso satisfactorio).
+</ResponseField>
+
+<ResponseField name="results" type="array" required>
+  Listado de conversaciones atendidas por asesores dentro del rango solicitado.
+
+  <Expandable title="Estructura de cada elemento en results">
+    - `_id`: Identificador único de la conversación.
+    - `operator.names`: Nombre del asesor que gestionó la conversación.
+    - `user.id`: Identificador del usuario final.
+    - `bot.name`: Nombre del bot asociado durante la conversación.
+    - `company.id`: Identificador de la compañía a la que pertenece la conversación.
+    - `assignationMethod.teamName`: Equipo asignado al ticket.
+    - `state`: Estado final de la conversación (por ejemplo, `resolved`, `expired`).
+    - `endedReason`: Motivo por el cual terminó la conversación.
+    - `startAt` y `endAt`: Marcas de tiempo de inicio y cierre.
+    - `origin`: Fuente de la conversación (por ejemplo, `ticket`).
+    - `timeRepliedOperator`: Tiempo en milisegundos que tardó el asesor en responder.
+    - `conversationDuration`: Duración total en milisegundos de la conversación.
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="pagination" type="object" required>
+  Información de paginación asociada a la consulta.
+
+  <Expandable title="Campos de pagination">
+    - `limit`: Conversaciones retornadas por página.
+    - `total`: Total de conversaciones que cumplen con los filtros.
+    - `offset`: Conversaciones omitidas según la página solicitada.
+    - `totalPages`: Cantidad total de páginas disponibles.
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="links" type="array">
+  Referencias para navegar entre páginas adicionales de resultados.
+</ResponseField>
+
+## Ejemplo de Respuesta
+
+```json
+{
+  "message": ["Retrieving conversations succeeded"],
+  "status": "success",
+  "results": [
+    {
+      "_id": "111111aaaaaa",
+      "operator": {
+        "names": "Jelou app"
+      },
+      "user": {
+        "id": "111111111111"
+      },
+      "bot": {
+        "name": "Jelou Dev WhatsApp"
+      },
+      "company": {
+        "id": 123
+      },
+      "assignationMethod": {
+        "teamName": "Frontend"
+      },
+      "state": "expired",
+      "endedReason": "expired",
+      "startAt": "2023-06-08 15:52:41",
+      "endAt": "2023-06-08 23:07:56",
+      "origin": "ticket",
+      "timeRepliedOperator": 795880,
+      "conversationDuration": 26115953
+    }
+  ],
+  "pagination": {
+    "limit": 1,
+    "total": 61,
+    "offset": 0,
+    "totalPages": 61
+  },
+  "links": [
+    {
+      "number": 1,
+      "url": "/v1/metrics/conversations/attended/external?limit=1&page=1"
+    },
+    {
+      "number": 2,
+      "url": "/v1/metrics/conversations/attended/external?limit=1&page=2"
+    }
+  ]
+}
+```
+
+## Errores Comunes
+
+- `401` - Credenciales inválidas o faltantes.
+- `422` - Parámetros de entrada no cumplen con las validaciones requeridas.
+- `429` - Se excedió el límite de consultas permitidas.
+- `500` - Error interno en el servicio al procesar la solicitud.

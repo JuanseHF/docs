@@ -1,0 +1,105 @@
+---
+title: 'URL Externa'
+description: 'Envía un mensaje con un botón que abre una URL'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"cta_url"`.
+</ParamField>
+
+<ParamField body="title" type="string" required>
+  Encabezado del mensaje mostrado al usuario.
+</ParamField>
+
+<ParamField body="text" type="string" required>
+  Contenido del mensaje.
+</ParamField>
+
+<ParamField body="caption" type="string" required>
+  Texto de pie de página mostrado debajo del mensaje.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+<ParamField body="parameters" type="object" required>
+  Configuración del botón URL.
+  
+  <Expandable title="Parámetros del Botón">
+    <ParamField body="parameters.url" type="string" required>
+      La URL que se abre cuando se hace clic en el botón. Debe ser una URL HTTPS válida.
+    </ParamField>
+    
+    <ParamField body="parameters.display_text" type="string" required>
+      Texto mostrado en el botón.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "cta_url",
+    "title": "Bienvenido",
+    "text": "Visita nuestro sitio web para aprender más",
+    "caption": "Jelou",
+    "userId": "USER_ID",
+    "parameters": {
+      "url": "https://apps.jelou.ai",
+      "display_text": "Visitar Sitio Web"
+    }
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Mejores Prácticas
+
+<Note>
+**URLs Seguras:** Asegúrate de que las URLs sean HTTPS y proporcionen texto de botón claro y accionable.
+</Note>
+
+## Casos de Uso
+
+- Dirigir usuarios a sitios web externos
+- Enlazar a aplicaciones web
+- Compartir recursos en línea
+- Redirigir a formularios o páginas de registro
+

@@ -1,13 +1,42 @@
 ---
 title: "Introducción"
-description: "Bienvenido a la documentación"
+description: "Brain Studio: low‑code para construir flujos y agentes AI."
 ---
 
-## Introducción
+## ¿Qué es Brain Studio?
 
-Este es un placeholder para la página de introducción.
+Brain Studio es una plataforma low code para construir agentes y flujos con IA. Permite definir conversaciones, integrar servicios y orquestar tareas mediante nodos y conexiones dentro de un entorno visual.
 
-## Contenido
+En Brain Studio trabajarás principalmente con dos tipos de archivos: las [Skills](#skills), que modelan flujos conversacionales con nodos de mensajes y lógica; y las [Tools](#tools), que te permiten reutilizar lógica y código sin duplicar trabajo.
 
-El contenido de esta página será actualizado próximamente.
+## Skills
+
+<img
+  src="/images/skills.webp"
+  alt="Vista de una Skill en el builder"
+  style={{ borderRadius: '0.5rem', width: '100%', marginTop: '0.5rem' }}
+/>
+
+Las Skills son flujos conversacionales que programas para interactuar con tus usuarios. Se construyen combinando:
+
+- [Nodos de mensajes](/nodos/mensajes): para enviar mensajes, preguntar y recopilar información.
+- [Nodos de lógica](/nodos/logica): para dirigir el flujo con condiciones, variables y operaciones.
+
+Con Skills puedes diseñar diálogos, ramificar decisiones y orquestar pasos según el contexto de la conversación.
+
+## Tools
+
+Las Tools son funciones reutilizables dentro de la plataforma. A diferencia de las Skills, son flujos síncronos: ejecutan servicios o tareas y devuelven un resultado sin esperar respuestas del usuario. Puedes invocar Tools desde tus Skills para:
+
+- Integrar APIs y servicios externos.
+- Realizar cálculos o transformaciones.
+- Consultar y actualizar datos.
+
+De esta forma, las Skills manejan la conversación y las Tools encapsulan capacidades reutilizables.
+
+## Siguientes pasos
+
+- Explora los [nodos de mensajes](/nodos/mensajes) y [nodos de lógica](/nodos/logica).
+- Crea tu primera Skill y reutiliza Tools donde las necesites.
+- Si es tu primera vez, empieza por el [Quickstart](/quickstart).
 

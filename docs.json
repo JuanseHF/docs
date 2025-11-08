@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
+  "theme": "almond",
   "name": "Mint Starter Kit",
   "colors": {
     "primary": "#16A34A",
@@ -18,8 +18,8 @@
             "icon": "rocket",
             "pages": [
               "introduccion",
-              "tu-primer-app",
-              "prueba-tu-app"
+              "tu-primer-skill",
+              "skills-con-ai"
             ]
           },
           {
@@ -40,12 +40,13 @@
             ]
           },
           {
-            "group": "Writing content",
+            "group": "Variables",
+            "icon": "code",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/reusable-snippets"
+              "variables/guia-rapida",
+              "variables/memory",
+              "variables/context",
+              "variables/input-output"
             ]
           },
           {
@@ -62,18 +63,57 @@
         "tab": "API reference",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "API reference",
             "pages": [
               "api-reference/introduction"
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "Send Messages",
+            "icon": "message",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "api-reference/envia-mensajes/introduccion",
+              {
+                "group": "Tipos de mensaje",
+                "pages": [
+                  "api-reference/envia-mensajes/texto",
+                  "api-reference/envia-mensajes/texto-con-opciones",
+                  "api-reference/envia-mensajes/respuestas-rapidas",
+                  "api-reference/envia-mensajes/imagen",
+                  "api-reference/envia-mensajes/audio",
+                  "api-reference/envia-mensajes/video",
+                  "api-reference/envia-mensajes/archivo",
+                  "api-reference/envia-mensajes/sticker",
+                  "api-reference/envia-mensajes/ubicacion",
+                  "api-reference/envia-mensajes/contacto",
+                  "api-reference/envia-mensajes/solicitud-ubicacion",
+                  "api-reference/envia-mensajes/boton-url",
+                  "api-reference/envia-mensajes/boton-flujo",
+                  "api-reference/envia-mensajes/boton-llamada"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Campañas",
+            "icon": "send",
+            "pages": [
+              "api-reference/campanas/introduccion"
+            ]
+          },
+          {
+            "group": "Conversaciones",
+            "icon": "clock-rotate-left",
+            "pages": [
+              "api-reference/conversaciones/historial",
+              "api-reference/conversaciones/conversaciones-asesores"
+            ]
+          },
+          {
+            "group": "Usuarios",
+            "icon": "user",
+            "pages": [
+              "api-reference/usuarios/estado"
             ]
           }
         ]

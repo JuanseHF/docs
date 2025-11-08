@@ -1,0 +1,34 @@
+---
+title: "Tu Primer Skill"
+description: "Crea tu primer skill con un flujo simple de pregunta y respuesta"
+---
+
+En esta guía vas a construir tu primer Skill: un flujo sencillo que pregunta el nombre, lo guarda en memoria y lo usa para saludar al usuario.
+
+### Arrastra un nodo pregunta
+
+En tu canvas, desde el punto a la derecha del nodo `start`, arrastra tu cursor y selecciona el nodo `pregunta`. En el campo de texto pega:
+
+```txt pregunta.txt
+Soy tu primer skill. ¿Cuál es tu nombre?
+```
+
+En el campo “Guardar respuesta como”, escribe: `nombre`.
+
+### Conécta un nodo texto.
+
+Partiendo del nodo pregunta que acabas de colocar, conecta un nodo texto con el siguiente contenido: 
+
+```txt texto.txt
+Hola, {{$memory.nombre}}
+```
+
+### Pruébalo en Whatsapp
+
+<Note>
+  No olvides guardar la respuesta del nodo pregunta en el paso 1.
+</Note>
+
+En la esquina superior derecha, haz click en probar.
+Puedes hacerlo desde nuestro tester, o agregar tu número para probar directamente desde WhatsApp. ¡Y listo! Así de fácil puedes construir un skill.
+

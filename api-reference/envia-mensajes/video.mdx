@@ -1,0 +1,94 @@
+---
+title: 'Video'
+description: 'Envía un video con texto opcional'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"video"`.
+</ParamField>
+
+<ParamField body="mediaUrl" type="string" required>
+  URL pública HTTPS del archivo de video a enviar.
+</ParamField>
+
+<ParamField body="text" type="string">
+  Mensaje opcional que acompaña el video.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+## Formatos y Límites de Tamaño
+
+| Tipo de Medio | Formatos Soportados | Límite de Tamaño |
+|---------------|---------------------|------------------|
+| **Video** | `video/mp4`, `video/3gp` | 16MB |
+
+## Requisitos de URL
+
+<Warning>
+La URL debe ser públicamente accesible vía HTTPS, no debe requerir autenticación, y debe apuntar directamente al archivo (no a una página HTML).
+</Warning>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "video",
+    "mediaUrl": "https://example.com/video.mp4",
+    "text": "Mira este video",
+    "userId": "USER_ID"
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Errores Comunes
+
+- `INVALID_MEDIA_URL` - La URL del video es inválida o inaccesible
+- `MEDIA_TOO_LARGE` - El archivo de video excede el límite de 16MB
+- `UNSUPPORTED_MEDIA_TYPE` - El formato de video no es soportado
+
+## Casos de Uso
+
+- Compartir tutoriales en video
+- Enviar demostraciones de productos
+- Compartir videos promocionales
+- Enviar contenido educativo
+

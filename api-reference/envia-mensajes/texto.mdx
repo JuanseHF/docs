@@ -1,0 +1,92 @@
+---
+title: 'Mensaje de Texto'
+description: 'Envía un mensaje de texto simple a un usuario'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"text"`.
+</ParamField>
+
+<ParamField body="text" type="string" required>
+  Contenido del texto del mensaje.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+<ParamField body="botId" type="string">
+  Identificador único del bot. Opcional si se incluye en la ruta.
+</ParamField>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "text",
+    "text": "Hola, este es un mensaje de texto",
+    "userId": "USER_ID"
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado. Usa este ID para rastrear el estado del mensaje.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Errores Comunes
+
+<ResponseField name="error" type="string">
+  Código de error que indica el tipo de error ocurrido.
+</ResponseField>
+
+<ResponseField name="message" type="string">
+  Mensaje de error legible que describe qué salió mal.
+</ResponseField>
+
+### Códigos de Error
+
+- `INVALID_REQUEST` - El cuerpo de la solicitud está mal formado o faltan campos requeridos
+- `UNAUTHORIZED` - Credenciales de autenticación inválidas
+- `BOT_NOT_FOUND` - El ID del bot especificado no existe
+- `USER_NOT_FOUND` - El ID del usuario especificado no existe
+
+## Casos de Uso
+
+- Notificaciones simples
+- Confirmaciones
+- Mensajes informativos
+- Respuestas automáticas básicas
+

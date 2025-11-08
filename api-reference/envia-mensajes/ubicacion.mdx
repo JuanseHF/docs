@@ -1,0 +1,90 @@
+---
+title: 'Ubicación'
+description: 'Envía una ubicación específica con coordenadas'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"location"`.
+</ParamField>
+
+<ParamField body="coordinates" type="object" required>
+  Objeto que contiene la latitud y longitud de la ubicación.
+  
+  <Expandable title="Propiedades de Coordenadas">
+    <ParamField body="coordinates.lat" type="number" required>
+      Latitud de la ubicación como número decimal. Rango: -90 a 90.
+    </ParamField>
+    
+    <ParamField body="coordinates.long" type="number" required>
+      Longitud de la ubicación como número decimal. Rango: -180 a 180.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "location",
+    "coordinates": {
+      "lat": 40.7128,
+      "long": -74.0060
+    },
+    "userId": "USER_ID"
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Notas Importantes
+
+<Note>
+**Precisión de Coordenadas:** Asegúrate de que las coordenadas sean precisas y estén en formato decimal. Usa valores negativos para latitud sur y longitud oeste.
+</Note>
+
+## Casos de Uso
+
+- Compartir ubicaciones de tiendas con clientes
+- Proporcionar direcciones a eventos o lugares
+- Compartir ubicaciones de recogida o entrega
+- Mostrar puntos de interés cercanos
+

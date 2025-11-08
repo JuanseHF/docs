@@ -1,0 +1,144 @@
+---
+title: 'Mensaje con Opciones'
+description: 'Envía un mensaje de texto con botones interactivos de selección'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"text"`.
+</ParamField>
+
+<ParamField body="text" type="string" required>
+  Contenido del mensaje mostrado al usuario.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+<ParamField body="buttons" type="object" required>
+  Configuración de los botones interactivos.
+  
+  <Expandable title="Configuración de Botones">
+    <ParamField body="buttons.title" type="string">
+      Título mostrado sobre el mensaje (opcional).
+    </ParamField>
+    
+    <ParamField body="buttons.buttonText" type="object">
+      Configuración del texto del botón principal.
+      
+      <Expandable title="Propiedades del Botón">
+        <ParamField body="buttons.buttonText.type" type="string" required>
+          Tipo de visualización del botón. Debe ser `"text"`.
+        </ParamField>
+        
+        <ParamField body="buttons.buttonText.text" type="string" required>
+          Texto mostrado en el botón principal. Por defecto: `"Opciones"`.
+        </ParamField>
+      </Expandable>
+    </ParamField>
+    
+    <ParamField body="buttons.options" type="array" required>
+      Lista de opciones disponibles para el usuario. Mínimo 1, máximo 10 opciones.
+      
+      <Expandable title="Propiedades de Opción">
+        <ParamField body="buttons.options[].title" type="string" required>
+          Título de cada opción. Máximo 24 caracteres.
+        </ParamField>
+        
+        <ParamField body="buttons.options[].description" type="string">
+          Descripción de la opción. Máximo 72 caracteres.
+        </ParamField>
+        
+        <ParamField body="buttons.options[].payload" type="string">
+          Texto enviado a tu webhook cuando se selecciona esta opción. Útil para identificar qué opción eligió el usuario.
+        </ParamField>
+      </Expandable>
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Restricciones
+
+- **Opciones**: Mínimo 1, máximo 10 opciones por mensaje
+- **Título de Opción**: Máximo 24 caracteres
+- **Descripción de Opción**: Máximo 72 caracteres
+- **Texto del Botón**: Por defecto es "Opciones" si no se especifica
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "text",
+    "text": "Por favor selecciona una opción",
+    "userId": "USER_ID",
+    "buttons": {
+      "title": "Elige una opción",
+      "buttonText": {
+        "type": "text",
+        "text": "Ver Opciones"
+      },
+      "options": [
+        {
+          "title": "Opción 1",
+          "description": "Esta es la primera opción",
+          "payload": "OPCION_1"
+        },
+        {
+          "title": "Opción 2",
+          "description": "Esta es la segunda opción",
+          "payload": "OPCION_2"
+        },
+        {
+          "title": "Opción 3",
+          "description": "Esta es la tercera opción",
+          "payload": "OPCION_3"
+        }
+      ]
+    }
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Casos de Uso
+
+- Crear menús de navegación
+- Proporcionar opciones de selección múltiple
+- Guiar a los usuarios a través de un flujo
+- Recopilar respuestas estructuradas
+

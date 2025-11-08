@@ -1,0 +1,77 @@
+---
+title: 'Solicitud de Ubicación'
+description: 'Envía un mensaje con un botón para solicitar la ubicación del usuario'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"location_request"`.
+</ParamField>
+
+<ParamField body="text" type="string" required>
+  Contenido del mensaje explicando por qué necesitas la ubicación.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "location_request",
+    "text": "Por favor comparte tu ubicación para encontrar tiendas cercanas",
+    "userId": "USER_ID"
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Mejores Prácticas
+
+<Warning>
+**Privacidad:** Siempre explica por qué necesitas la ubicación del usuario. Sé transparente sobre cómo se usará la información de ubicación y respeta la privacidad del usuario.
+</Warning>
+
+## Casos de Uso
+
+- Encontrar tiendas o servicios cercanos
+- Solicitar ubicación de entrega
+- Proporcionar direcciones personalizadas
+- Servicios basados en ubicación
+

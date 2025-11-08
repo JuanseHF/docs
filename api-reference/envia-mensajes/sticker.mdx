@@ -1,0 +1,89 @@
+---
+title: 'Sticker'
+description: 'Envía un sticker'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"sticker"`.
+</ParamField>
+
+<ParamField body="mediaUrl" type="string" required>
+  URL pública HTTPS del archivo del sticker a enviar.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+## Formatos y Límites de Tamaño
+
+| Tipo de Medio | Formatos Soportados | Límite de Tamaño |
+|---------------|---------------------|------------------|
+| **Sticker** | `image/webp` | 100KB |
+
+## Requisitos de URL
+
+<Warning>
+La URL debe ser públicamente accesible vía HTTPS, no debe requerir autenticación, y debe apuntar directamente al archivo (no a una página HTML).
+</Warning>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "sticker",
+    "mediaUrl": "https://example.com/sticker.webp",
+    "userId": "USER_ID"
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Errores Comunes
+
+- `INVALID_MEDIA_URL` - La URL del sticker es inválida o inaccesible
+- `MEDIA_TOO_LARGE` - El sticker excede el límite de 100KB
+- `UNSUPPORTED_MEDIA_TYPE` - El formato no es WebP
+
+## Casos de Uso
+
+- Agregar elementos visuales divertidos
+- Expresar emociones
+- Mejorar la experiencia del usuario
+- Personalizar la comunicación
+

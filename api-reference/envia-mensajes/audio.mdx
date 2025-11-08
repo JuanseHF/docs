@@ -1,0 +1,89 @@
+---
+title: 'Audio'
+description: 'Envía un archivo de audio'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"audio"`.
+</ParamField>
+
+<ParamField body="mediaUrl" type="string" required>
+  URL pública HTTPS del archivo de audio a enviar.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+## Formatos y Límites de Tamaño
+
+| Tipo de Medio | Formatos Soportados | Límite de Tamaño |
+|---------------|---------------------|------------------|
+| **Audio** | `audio/aac`, `audio/mp4`, `audio/mpeg`, `audio/amr`, `audio/ogg` (solo codec opus) | 16MB |
+
+## Requisitos de URL
+
+<Warning>
+La URL debe ser públicamente accesible vía HTTPS, no debe requerir autenticación, y debe apuntar directamente al archivo (no a una página HTML).
+</Warning>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "audio",
+    "mediaUrl": "https://example.com/audio.mp3",
+    "userId": "USER_ID"
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Errores Comunes
+
+- `INVALID_MEDIA_URL` - La URL del audio es inválida o inaccesible
+- `MEDIA_TOO_LARGE` - El archivo de audio excede el límite de 16MB
+- `UNSUPPORTED_MEDIA_TYPE` - El formato de audio no es soportado
+
+## Casos de Uso
+
+- Enviar mensajes de voz
+- Compartir música o podcasts
+- Enviar notificaciones de audio
+- Compartir grabaciones
+

@@ -1,33 +1,155 @@
 ---
 title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+description: 'Get started with the Jelou API'
 ---
-
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
 
 ## Welcome
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+The Jelou API allows you to send messages to users through WhatsApp. This API supports multiple message types including text, images, audio, video, files, stickers, location, contacts, and interactive elements like buttons and quick replies.
 
 <Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
+  title="OpenAPI Specification"
+  icon="code"
+  href="https://github.com/your-org/docs/blob/main/api-reference/openapi.json"
 >
-  View the OpenAPI specification file
+  View the complete OpenAPI specification file
 </Card>
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://api.jelou.ai/v1
+```
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API endpoints require Basic Authentication using your `clientId` and `clientSecret`.
+
+### Getting Your Credentials
+
+When you sign up for the Jelou API, you'll receive:
+- **Client ID**: Your unique client identifier
+- **Client Secret**: Your secret key for authentication
+
+### How to Authenticate
+
+For any API endpoint, you must include the following header:
+
+```
+Authorization: Basic <Base64 encoded clientId:clientSecret>
+```
+
+### Example
+
+If your `clientId` is `your_client_id` and your `clientSecret` is `your_client_secret`, you would:
+
+1. Combine them with a colon: `your_client_id:your_client_secret`
+2. Base64 encode the result: `eW91cl9jbGllbnRfaWQ6eW91cl9jbGllbnRfc2VjcmV0`
+3. Include in the header: `Authorization: Basic eW91cl9jbGllbnRfaWQ6eW91cl9jbGllbnRfc2VjcmV0`
+
+### cURL Example
+
+```bash
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "text",
+    "text": "Hello World",
+    "userId": "USER_ID"
+  }'
+```
+
+## Message Types
+
+The Jelou API supports the following message types:
+
+<CardGroup cols={2}>
+  <Card
+    title="Text Messages"
+    icon="message"
+    href="/api-reference/messages/text"
+  >
+    Simple text messages and text with interactive buttons
+  </Card>
+  <Card
+    title="Media Messages"
+    icon="image"
+    href="/api-reference/messages/media"
+  >
+    Images, audio, video, files, and stickers
+  </Card>
+  <Card
+    title="Interactive Messages"
+    icon="cursor-click"
+    href="/api-reference/messages/interactive"
+  >
+    Quick replies, location requests, and call-to-action buttons
+  </Card>
+  <Card
+    title="Special Messages"
+    icon="map-pin"
+    href="/api-reference/messages/special"
+  >
+    Location, contacts, and flow messages
+  </Card>
+</CardGroup>
+
+## Media Requirements
+
+When sending media files (images, audio, video, files, stickers), ensure your URLs meet these requirements:
+
+<Warning>
+**Important Media Requirements:**
+- URLs must be publicly accessible via HTTPS
+- No authentication required (no tokens, cookies, etc.)
+- URLs should not expire quickly (at least until message delivery is confirmed)
+- URLs must point directly to the file (not an HTML page)
+- Files must be in supported formats and respect size limits
+</Warning>
+
+### Supported Media Types and Limits
+
+| Media Type | Supported Formats | Size Limit |
+|------------|------------------|------------|
+| **Audio** | `audio/aac`, `audio/mp4`, `audio/mpeg`, `audio/amr`, `audio/ogg` (opus codec only) | 16MB |
+| **File** | `text/plain`, `application/pdf`, `application/vnd.ms-powerpoint`, `application/msword`, `application/vnd.ms-excel`, `application/vnd.openxmlformats-officedocument.*` | 100MB |
+| **Image** | `image/jpeg`, `image/png` | 5MB |
+| **Video** | `video/mp4`, `video/3gp` | 16MB |
+| **Sticker** | `image/webp` | 100KB |
+
+## Rate Limits
+
+API rate limits apply to prevent abuse. Contact support for information about your specific rate limits.
+
+## Error Handling
+
+The API uses standard HTTP status codes:
+
+- `200` - Success
+- `400` - Bad Request (invalid message format or missing required fields)
+- `401` - Unauthorized (invalid authentication credentials)
+- `404` - Not Found (bot or user not found)
+- `500` - Internal Server Error
+
+All errors return a JSON object with an `error` code and `message`:
 
 ```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+{
+  "error": "INVALID_REQUEST",
+  "message": "Invalid message format"
+}
 ```
+
+## Getting Help
+
+<Card
+  title="Support"
+  icon="help"
+  href="mailto:support@jelou.ai"
+>
+  Contact our support team for assistance
+</Card>

@@ -1,0 +1,205 @@
+---
+title: 'Contacto'
+description: 'Envía una tarjeta de contacto (vCard)'
+---
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"contacts"`.
+</ParamField>
+
+<ParamField body="contacts" type="array" required>
+  Array de objetos de contacto. Cada contacto puede incluir nombre, números de teléfono, correos electrónicos y direcciones.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+### Estructura del Objeto de Contacto
+
+<Expandable title="Propiedades del Contacto">
+  <ParamField body="contacts[].name" type="object">
+    Información del nombre del contacto.
+    
+    <Expandable title="Propiedades del Nombre">
+      <ParamField body="contacts[].name.formatted_name" type="string">
+        Nombre completo formateado del contacto.
+      </ParamField>
+      
+      <ParamField body="contacts[].name.first_name" type="string">
+        Nombre del contacto.
+      </ParamField>
+      
+      <ParamField body="contacts[].name.last_name" type="string">
+        Apellido del contacto.
+      </ParamField>
+      
+      <ParamField body="contacts[].name.middle_name" type="string">
+        Segundo nombre del contacto.
+      </ParamField>
+    </Expandable>
+  </ParamField>
+  
+  <ParamField body="contacts[].phones" type="array">
+    Array de números de teléfono del contacto.
+    
+    <Expandable title="Propiedades del Teléfono">
+      <ParamField body="contacts[].phones[].phone" type="string">
+        Número de teléfono en formato E.164 (ej: +1234567890).
+      </ParamField>
+      
+      <ParamField body="contacts[].phones[].type" type="string">
+        Tipo de número de teléfono (ej: "Mobile", "Work", "Home").
+      </ParamField>
+      
+      <ParamField body="contacts[].phones[].wa_id" type="string">
+        ID de WhatsApp asociado con el número de teléfono.
+      </ParamField>
+    </Expandable>
+  </ParamField>
+  
+  <ParamField body="contacts[].emails" type="array">
+    Array de direcciones de correo electrónico del contacto.
+    
+    <Expandable title="Propiedades del Email">
+      <ParamField body="contacts[].emails[].email" type="string">
+        Dirección de correo electrónico del contacto.
+      </ParamField>
+      
+      <ParamField body="contacts[].emails[].type" type="string">
+        Tipo de correo (ej: "Work", "Personal").
+      </ParamField>
+    </Expandable>
+  </ParamField>
+  
+  <ParamField body="contacts[].addresses" type="array">
+    Array de direcciones del contacto.
+    
+    <Expandable title="Propiedades de la Dirección">
+      <ParamField body="contacts[].addresses[].street" type="string">
+        Dirección de la calle.
+      </ParamField>
+      
+      <ParamField body="contacts[].addresses[].city" type="string">
+        Nombre de la ciudad.
+      </ParamField>
+      
+      <ParamField body="contacts[].addresses[].state" type="string">
+        Estado o provincia.
+      </ParamField>
+      
+      <ParamField body="contacts[].addresses[].zip" type="string">
+        Código postal o ZIP.
+      </ParamField>
+      
+      <ParamField body="contacts[].addresses[].country" type="string">
+        Nombre del país.
+      </ParamField>
+      
+      <ParamField body="contacts[].addresses[].country_code" type="string">
+        Código ISO del país (ej: "US", "MX").
+      </ParamField>
+      
+      <ParamField body="contacts[].addresses[].type" type="string">
+        Tipo de dirección (ej: "Office", "Home").
+      </ParamField>
+    </Expandable>
+  </ParamField>
+</Expandable>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "contacts",
+    "userId": "USER_ID",
+    "contacts": [
+      {
+        "name": {
+          "formatted_name": "Juan Pérez",
+          "first_name": "Juan",
+          "last_name": "Pérez"
+        },
+        "phones": [
+          {
+            "phone": "+1234567890",
+            "type": "Mobile",
+            "wa_id": "1234567890"
+          }
+        ],
+        "emails": [
+          {
+            "email": "juan.perez@example.com",
+            "type": "Work"
+          }
+        ],
+        "addresses": [
+          {
+            "street": "Calle Principal 123",
+            "city": "Ciudad de México",
+            "state": "CDMX",
+            "zip": "01000",
+            "country": "México",
+            "country_code": "MX",
+            "type": "Office"
+          }
+        ]
+      }
+    ]
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Notas Importantes
+
+<Note>
+**Formato de Teléfono:** Siempre usa formato E.164 para números de teléfono (ej: +1234567890) para asegurar compatibilidad entre diferentes regiones.
+</Note>
+
+<Note>
+**Completitud del Contacto:** Aunque todos los campos son opcionales, proporcionar información completa del contacto (nombre, teléfono, email) mejora la experiencia del usuario y hace los contactos más útiles.
+</Note>
+
+## Casos de Uso
+
+- Compartir información de contacto de soporte
+- Referir usuarios a miembros específicos del equipo
+- Proporcionar información de tarjetas de presentación
+- Compartir contactos de emergencia
+

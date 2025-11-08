@@ -1,0 +1,26 @@
+---
+title: 'Campañas'
+description: 'Envía plantillas preaprobadas de WhatsApp a escala con la API de Jelou'
+---
+
+## Visión general
+
+Las campañas te permiten enviar mensajes plantilla preaprobados por Meta de forma proactiva para abrir conversaciones con tus usuarios de WhatsApp. Puedes gestionarlas desde el dashboard de Jelou o automatizarlas a través de nuestra API.
+
+## ¿Cuándo usar campañas?
+
+- No existe una sesión activa (han pasado más de 24 horas desde el último mensaje del usuario).
+- Necesitas notificar de forma masiva o programada usando plantillas aprobadas.
+- Requieres reactivar una conversación antes de continuar con mensajes de sesión.
+
+> Las campañas siempre utilizan mensajes plantilla; no es posible incluir contenido fuera de las variables permitidas por Meta.
+
+## Flujo básico
+
+1. **Selecciona la plantilla** aprobada que quieres enviar.
+2. **Define la audiencia** (uno o varios `userId`) directamente en el dashboard o mediante tu integración.
+3. **Configura variables** y parámetros dinámicos para personalizar el envío.
+4. **Programa o envía** la campaña y monitoriza los resultados en Jelou o vía webhooks.
+
+Una vez que el destinatario responda, la conversación pasa a estado de sesión abierta y puedes continuar con mensajes libres siguiendo la guía de [Send Messages](/api-reference/envia-mensajes/introduccion).
+

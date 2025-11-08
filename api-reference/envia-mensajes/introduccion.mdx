@@ -1,0 +1,176 @@
+---
+title: 'Introducción'
+description: 'Aprende a enviar mensajes a través de la API de Jelou'
+---
+
+## Bienvenido
+
+La API de Jelou te permite enviar mensajes a usuarios a través de WhatsApp. Esta API soporta múltiples tipos de mensajes incluyendo texto, imágenes, audio, video, archivos, stickers, ubicación, contactos y elementos interactivos como botones y respuestas rápidas.
+
+## Endpoint Base
+
+Todos los mensajes se envían a través del siguiente endpoint:
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Requisitos de Sesión
+
+Esta API solo puede enviar mensajes cuando existe una sesión activa: dispones de 24 horas desde el último mensaje del usuario para responder con cualquier tipo de mensaje.
+
+Si la sesión expiró, debes enviar plantillas preaprobadas mediante nuestra plataforma o API de [Campañas](/api-reference/campanas/introduccion) para reabrir la conversación antes de continuar con mensajes libres.
+
+## Campos Comunes
+
+Todos los tipos de mensajes comparten estos campos comunes:
+
+<ParamField body="type" type="string" required>
+  Tipo de mensaje a enviar. Ver tipos disponibles en las siguientes páginas.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+<ParamField body="botId" type="string">
+  Identificador único del bot que envía el mensaje. Puede incluirse en el cuerpo o inferirse del parámetro de ruta.
+</ParamField>
+
+## Tipos de Mensajes Disponibles
+
+La API de Jelou soporta los siguientes tipos de mensajes:
+
+<CardGroup cols={2}>
+  <Card
+    title="Mensaje de Texto"
+    icon="message"
+    href="/api-reference/envia-mensajes/texto"
+  >
+    Mensajes de texto simples y con botones interactivos
+  </Card>
+  <Card
+    title="Mensaje con Opciones"
+    icon="list"
+    href="/api-reference/envia-mensajes/texto-con-opciones"
+  >
+    Texto con botones de selección múltiple
+  </Card>
+  <Card
+    title="Respuestas Rápidas"
+    icon="bolt"
+    href="/api-reference/envia-mensajes/respuestas-rapidas"
+  >
+    Mensajes con botones de respuesta rápida
+  </Card>
+  <Card
+    title="Mensaje con Imagen"
+    icon="image"
+    href="/api-reference/envia-mensajes/imagen"
+  >
+    Envía imágenes con texto opcional
+  </Card>
+  <Card
+    title="Mensaje de Audio"
+    icon="volume"
+    href="/api-reference/envia-mensajes/audio"
+  >
+    Envía archivos de audio
+  </Card>
+  <Card
+    title="Mensaje con Video"
+    icon="video"
+    href="/api-reference/envia-mensajes/video"
+  >
+    Envía videos con texto opcional
+  </Card>
+  <Card
+    title="Mensaje con Archivo"
+    icon="file"
+    href="/api-reference/envia-mensajes/archivo"
+  >
+    Envía documentos y archivos
+  </Card>
+  <Card
+    title="Mensaje con Sticker"
+    icon="smile"
+    href="/api-reference/envia-mensajes/sticker"
+  >
+    Envía stickers en formato WebP
+  </Card>
+  <Card
+    title="Mensaje con Ubicación"
+    icon="map-pin"
+    href="/api-reference/envia-mensajes/ubicacion"
+  >
+    Comparte coordenadas específicas
+  </Card>
+  <Card
+    title="Mensaje de Contacto"
+    icon="user"
+    href="/api-reference/envia-mensajes/contacto"
+  >
+    Comparte tarjetas de contacto (vCard)
+  </Card>
+  <Card
+    title="Solicitud de Ubicación"
+    icon="location"
+    href="/api-reference/envia-mensajes/solicitud-ubicacion"
+  >
+    Solicita la ubicación del usuario
+  </Card>
+  <Card
+    title="Botón URL"
+    icon="link"
+    href="/api-reference/envia-mensajes/boton-url"
+  >
+    Botón que abre una URL
+  </Card>
+  <Card
+    title="Botón de Flujo"
+    icon="workflow"
+    href="/api-reference/envia-mensajes/boton-flujo"
+  >
+    Botón que abre un WhatsApp Flow
+  </Card>
+  <Card
+    title="Botón de Llamada"
+    icon="phone"
+    href="/api-reference/envia-mensajes/boton-llamada"
+  >
+    Botón que inicia una llamada de voz
+  </Card>
+</CardGroup>
+
+## Respuestas
+
+### Respuesta Exitosa
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+### Respuestas de Error
+
+```json
+{
+  "error": "INVALID_REQUEST",
+  "message": "Formato de mensaje inválido"
+}
+```
+
+## Códigos de Estado HTTP
+
+- `200` - Éxito
+- `400` - Solicitud incorrecta (formato de mensaje inválido o campos requeridos faltantes)
+- `401` - No autorizado (sesión inexistente o expirada)
+- `404` - No encontrado (bot o usuario no encontrado)
+- `500` - Error interno del servidor
+
+## Próximos Pasos
+
+Explora los diferentes tipos de mensajes disponibles en las siguientes páginas. Cada página incluye ejemplos de solicitud completos y documentación detallada de los parámetros.
+

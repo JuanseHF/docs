@@ -1,123 +1,79 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
+    "title": "Jelou API",
+    "description": "API for sending messages through Jelou platform. Supports multiple message types including text, images, audio, video, files, stickers, location, contacts, and interactive buttons.",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.jelou.ai/v1",
+      "description": "Production server"
     }
   ],
   "security": [
     {
-      "bearerAuth": []
+      "basicAuth": []
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/bots/{botId}/messages": {
       "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+        "summary": "Send Message",
+        "description": "Send a message to a user. Supports multiple message types including text, images, audio, video, files, stickers, location, contacts, and interactive elements.",
+        "operationId": "sendMessage",
+        "tags": ["Messages"],
         "parameters": [
           {
-            "name": "id",
+            "name": "botId",
             "in": "path",
-            "description": "ID of plant to delete",
             "required": true,
+            "description": "The unique identifier of the bot",
             "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+              "type": "string"
+            },
+            "example": "BOT_ID"
           }
         ],
+        "requestBody": {
+          "required": true,
+          "description": "Message payload. The structure varies based on the message type.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  { "$ref": "#/components/schemas/TextMessage" },
+                  { "$ref": "#/components/schemas/TextWithOptionsMessage" },
+                  { "$ref": "#/components/schemas/QuickReplyMessage" },
+                  { "$ref": "#/components/schemas/ImageMessage" },
+                  { "$ref": "#/components/schemas/AudioMessage" },
+                  { "$ref": "#/components/schemas/VideoMessage" },
+                  { "$ref": "#/components/schemas/FileMessage" },
+                  { "$ref": "#/components/schemas/StickerMessage" },
+                  { "$ref": "#/components/schemas/LocationMessage" },
+                  { "$ref": "#/components/schemas/ContactsMessage" },
+                  { "$ref": "#/components/schemas/LocationRequestMessage" },
+                  { "$ref": "#/components/schemas/CTAUrlMessage" },
+                  { "$ref": "#/components/schemas/FlowMessage" },
+                  { "$ref": "#/components/schemas/VoiceCallMessage" }
+                ]
+              }
+            }
+          }
+        },
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
+          "200": {
+            "description": "Message sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
           },
           "400": {
-            "description": "unexpected error",
+            "description": "Bad request - Invalid message format or missing required fields",
             "content": {
               "application/json": {
                 "schema": {
@@ -125,28 +81,26 @@
                 }
               }
             }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+          },
+          "401": {
+            "description": "Unauthorized - Invalid authentication credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
               }
             }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+          },
+          "404": {
+            "description": "Not found - Bot or user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -154,63 +108,705 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "BaseMessage": {
         "type": "object",
+        "required": ["type", "userId"],
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "type": {
+            "type": "string",
+            "description": "Type of message to send"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "userId": {
+            "type": "string",
+            "description": "Unique identifier of the user receiving the message",
+            "example": "USER_ID"
+          },
+          "botId": {
+            "type": "string",
+            "description": "Unique identifier of the bot sending the message",
+            "example": "BOT_ID"
           }
         }
       },
-      "NewPlant": {
+      "TextMessage": {
         "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
           {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
             "type": "object",
+            "required": ["type", "text", "userId"],
             "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+              "type": {
+                "type": "string",
+                "enum": ["text"],
+                "example": "text"
+              },
+              "text": {
+                "type": "string",
+                "description": "Text content of the message",
+                "example": "Hello, this is a text message"
               }
             }
           }
         ]
       },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+      "TextWithOptionsMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "text", "userId", "buttons"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["text"],
+                "example": "text"
+              },
+              "text": {
+                "type": "string",
+                "description": "Content of the message",
+                "example": "Please select an option"
+              },
+              "buttons": {
+                "$ref": "#/components/schemas/Buttons"
+              }
+            }
+          }
+        ]
+      },
+      "Buttons": {
+        "type": "object",
+        "required": ["options"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title displayed above the message"
+          },
+          "buttonText": {
+            "$ref": "#/components/schemas/ButtonText"
+          },
+          "options": {
+            "type": "array",
+            "description": "List of options available (minimum 1, maximum 10)",
+            "minItems": 1,
+            "maxItems": 10,
+            "items": {
+              "$ref": "#/components/schemas/ButtonOption"
+            }
+          }
+        }
+      },
+      "ButtonText": {
+        "type": "object",
+        "required": ["type", "text"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["text"],
+            "description": "Type of data display for the button"
+          },
+          "text": {
+            "type": "string",
+            "description": "Text on the main button (default: 'Opciones')",
+            "default": "Opciones"
+          }
+        }
+      },
+      "ButtonOption": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Title of each option (maximum 24 characters)",
+            "maxLength": 24,
+            "example": "Option 1"
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the option (maximum 72 characters)",
+            "maxLength": 72,
+            "example": "This is option 1"
+          },
+          "payload": {
+            "type": "string",
+            "description": "Text sent to webhook when option is selected",
+            "example": "OPTION_1_PAYLOAD"
+          }
+        }
+      },
+      "QuickReplyMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "text", "userId", "quick_replies"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["quick_reply"],
+                "example": "quick_reply"
+              },
+              "text": {
+                "type": "string",
+                "description": "Content of the message to send to the client",
+                "example": "Choose a quick reply"
+              },
+              "title": {
+                "type": "string",
+                "description": "Title of the message (optional, max 20 characters)",
+                "maxLength": 20
+              },
+              "quick_replies": {
+                "type": "array",
+                "description": "Quick reply buttons (minimum 1, maximum 3)",
+                "minItems": 1,
+                "maxItems": 3,
+                "items": {
+                  "$ref": "#/components/schemas/QuickReply"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "QuickReply": {
+        "type": "object",
+        "required": ["title"],
+        "properties": {
+          "title": {
+            "type": "string",
+            "description": "Text of each quick reply button (max 20 characters, no emojis or markdown, must be unique)",
+            "maxLength": 20,
+            "example": "Yes"
+          }
+        }
+      },
+      "ImageMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "mediaUrl", "userId"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["image"],
+                "example": "image"
+              },
+              "mediaUrl": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL of the image to send. Must be publicly accessible via HTTPS.",
+                "example": "https://example.com/image.jpg"
+              },
+              "text": {
+                "type": "string",
+                "description": "Optional message accompanying the image",
+                "example": "Check out this image"
+              }
+            }
+          }
+        ]
+      },
+      "AudioMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "mediaUrl", "userId"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["audio"],
+                "example": "audio"
+              },
+              "mediaUrl": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL of the audio file to send. Must be publicly accessible via HTTPS.",
+                "example": "https://example.com/audio.mp3"
+              }
+            }
+          }
+        ]
+      },
+      "VideoMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "mediaUrl", "userId"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["video"],
+                "example": "video"
+              },
+              "mediaUrl": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL of the video file to send. Must be publicly accessible via HTTPS.",
+                "example": "https://example.com/video.mp4"
+              },
+              "text": {
+                "type": "string",
+                "description": "Optional message accompanying the video",
+                "example": "Check out this video"
+              }
+            }
+          }
+        ]
+      },
+      "FileMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "mediaUrl", "userId"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["file"],
+                "example": "file"
+              },
+              "mediaUrl": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL of the file to send. Must be publicly accessible via HTTPS.",
+                "example": "https://example.com/document.pdf"
+              },
+              "text": {
+                "type": "string",
+                "description": "Optional message accompanying the file"
+              },
+              "filename": {
+                "type": "string",
+                "description": "Name of the file",
+                "example": "document.pdf"
+              }
+            }
+          }
+        ]
+      },
+      "StickerMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "mediaUrl", "userId"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["sticker"],
+                "example": "sticker"
+              },
+              "mediaUrl": {
+                "type": "string",
+                "format": "uri",
+                "description": "URL of the sticker file to send. Must be publicly accessible via HTTPS.",
+                "example": "https://example.com/sticker.webp"
+              }
+            }
+          }
+        ]
+      },
+      "LocationMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "coordinates", "userId"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["location"],
+                "example": "location"
+              },
+              "coordinates": {
+                "$ref": "#/components/schemas/Coordinates"
+              }
+            }
+          }
+        ]
+      },
+      "Coordinates": {
+        "type": "object",
+        "required": ["lat", "long"],
+        "properties": {
+          "lat": {
+            "type": "number",
+            "format": "double",
+            "description": "Latitude of the location (decimal number)",
+            "example": 40.7128
+          },
+          "long": {
+            "type": "number",
+            "format": "double",
+            "description": "Longitude of the location (decimal number)",
+            "example": -74.0060
+          }
+        }
+      },
+      "ContactsMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "contacts", "userId"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["contacts"],
+                "example": "contacts"
+              },
+              "contacts": {
+                "type": "array",
+                "description": "Array of contact objects",
+                "items": {
+                  "$ref": "#/components/schemas/Contact"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Contact": {
         "type": "object",
         "properties": {
+          "name": {
+            "$ref": "#/components/schemas/ContactName"
+          },
+          "phones": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactPhone"
+            }
+          },
+          "emails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactEmail"
+            }
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactAddress"
+            }
+          }
+        }
+      },
+      "ContactName": {
+        "type": "object",
+        "properties": {
+          "formatted_name": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string",
+            "example": "Doe"
+          },
+          "middle_name": {
+            "type": "string",
+            "example": "M."
+          }
+        }
+      },
+      "ContactPhone": {
+        "type": "object",
+        "properties": {
+          "phone": {
+            "type": "string",
+            "example": "+1234567890"
+          },
+          "type": {
+            "type": "string",
+            "example": "Mobile"
+          },
+          "wa_id": {
+            "type": "string",
+            "example": "PHONE_ID"
+          }
+        }
+      },
+      "ContactEmail": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "user@example.com"
+          },
+          "type": {
+            "type": "string",
+            "example": "Work"
+          }
+        }
+      },
+      "ContactAddress": {
+        "type": "object",
+        "properties": {
+          "street": {
+            "type": "string",
+            "example": "1 Lucky Shrub Way"
+          },
+          "city": {
+            "type": "string",
+            "example": "Menlo Park"
+          },
+          "state": {
+            "type": "string",
+            "example": "CA"
+          },
+          "zip": {
+            "type": "string",
+            "example": "94025"
+          },
+          "country": {
+            "type": "string",
+            "example": "United States"
+          },
+          "country_code": {
+            "type": "string",
+            "example": "US"
+          },
+          "type": {
+            "type": "string",
+            "example": "Office"
+          }
+        }
+      },
+      "LocationRequestMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "text", "userId"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["location_request"],
+                "example": "location_request"
+              },
+              "text": {
+                "type": "string",
+                "description": "Content of the message",
+                "example": "Please share your location"
+              }
+            }
+          }
+        ]
+      },
+      "CTAUrlMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "title", "text", "caption", "userId", "parameters"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["cta_url"],
+                "example": "cta_url"
+              },
+              "title": {
+                "type": "string",
+                "description": "Header of the message",
+                "example": "Welcome"
+              },
+              "text": {
+                "type": "string",
+                "description": "Content of the message",
+                "example": "Visit our website"
+              },
+              "caption": {
+                "type": "string",
+                "description": "Footer text",
+                "example": "Jelou"
+              },
+              "parameters": {
+                "$ref": "#/components/schemas/CTAUrlParameters"
+              }
+            }
+          }
+        ]
+      },
+      "CTAUrlParameters": {
+        "type": "object",
+        "required": ["url", "display_text"],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the button",
+            "example": "https://apps.jelou.ai"
+          },
+          "display_text": {
+            "type": "string",
+            "description": "Text of the button",
+            "example": "Visit Website"
+          }
+        }
+      },
+      "FlowMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "title", "text", "caption", "userId", "parameters"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["flow"],
+                "example": "flow"
+              },
+              "title": {
+                "type": "string",
+                "description": "Header of the message",
+                "example": "Hi"
+              },
+              "text": {
+                "type": "string",
+                "description": "Content of the message",
+                "example": "Complete this flow"
+              },
+              "caption": {
+                "type": "string",
+                "description": "Footer text",
+                "example": "Jelou"
+              },
+              "parameters": {
+                "$ref": "#/components/schemas/FlowParameters"
+              }
+            }
+          }
+        ]
+      },
+      "FlowParameters": {
+        "type": "object",
+        "required": ["flow_id", "flow_cta", "flow_name", "flow_action_payload", "mode", "flow_action", "flow_message_version"],
+        "properties": {
+          "flow_id": {
+            "type": "string",
+            "description": "Unique identifier of the flow",
+            "example": "FLOW_ID"
+          },
+          "flow_cta": {
+            "type": "string",
+            "description": "Call-to-action text for the flow button",
+            "example": "Start Flow"
+          },
+          "flow_name": {
+            "type": "string",
+            "description": "Name of the flow",
+            "example": "FLOW_NAME"
+          },
+          "flow_action_payload": {
+            "type": "object",
+            "description": "Payload data for the flow action",
+            "example": {
+              "screen": "RECOMMEND"
+            }
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["draft", "published"],
+            "description": "Mode of the flow",
+            "example": "draft"
+          },
+          "flow_action": {
+            "type": "string",
+            "enum": ["navigate"],
+            "description": "Action to perform",
+            "example": "navigate"
+          },
+          "flow_message_version": {
+            "type": "string",
+            "description": "Version of the flow message",
+            "example": "3"
+          }
+        }
+      },
+      "VoiceCallMessage": {
+        "allOf": [
+          { "$ref": "#/components/schemas/BaseMessage" },
+          {
+            "type": "object",
+            "required": ["type", "text", "userId", "parameters"],
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["voice_call"],
+                "example": "voice_call"
+              },
+              "header": {
+                "type": "string",
+                "description": "Header of the message"
+              },
+              "text": {
+                "type": "string",
+                "description": "Content of the message",
+                "example": "Bienvenido a Jelou😎"
+              },
+              "parameters": {
+                "$ref": "#/components/schemas/VoiceCallParameters"
+              }
+            }
+          }
+        ]
+      },
+      "VoiceCallParameters": {
+        "type": "object",
+        "required": ["display_text"],
+        "properties": {
+          "display_text": {
+            "type": "string",
+            "description": "Text displayed on the call button",
+            "example": "Hablar con un asesor"
+          }
+        }
+      },
+      "MessageResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "messageId": {
+            "type": "string",
+            "description": "Unique identifier of the sent message",
+            "example": "msg_123456789"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error", "message"],
+        "properties": {
           "error": {
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "description": "Error code",
+            "example": "INVALID_REQUEST"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Human-readable error message",
+            "example": "Invalid message format"
           }
         }
       }
     },
     "securitySchemes": {
-      "bearerAuth": {
+      "basicAuth": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "basic",
+        "description": "Basic authentication using Base64 encoded clientId:clientSecret"
       }
     }
   }

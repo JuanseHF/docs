@@ -1,0 +1,99 @@
+---
+title: 'Llamada'
+description: 'Envía un mensaje con un botón que inicia una llamada de voz'
+---
+
+<Warning>
+**Configuración Requerida:** Para enviar mensajes con botones de llamada, tu cuenta de WhatsApp debe tener la configuración de llamadas activada. Contacta al equipo de soporte para más información.
+</Warning>
+
+## Endpoint
+
+```
+POST https://api.jelou.ai/v1/bots/{botId}/messages
+```
+
+## Parámetros de Ruta
+
+<ParamField path="botId" type="string" required>
+  Identificador único del bot que envía el mensaje.
+</ParamField>
+
+## Cuerpo de la Solicitud
+
+<ParamField body="type" type="string" required>
+  Debe ser `"voice_call"`.
+</ParamField>
+
+<ParamField body="header" type="string">
+  Encabezado del mensaje (opcional).
+</ParamField>
+
+<ParamField body="text" type="string" required>
+  Contenido del mensaje.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Identificador único del usuario que recibirá el mensaje.
+</ParamField>
+
+<ParamField body="parameters" type="object" required>
+  Configuración del botón de llamada.
+  
+  <Expandable title="Parámetros de Llamada">
+    <ParamField body="parameters.display_text" type="string" required>
+      Texto mostrado en el botón de llamada.
+    </ParamField>
+  </Expandable>
+</ParamField>
+
+## Ejemplos de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/bots/BOT_ID/messages \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "type": "voice_call",
+    "header": "¿Necesitas Ayuda?",
+    "text": "Haz clic en el botón para hablar con un agente",
+    "userId": "USER_ID",
+    "parameters": {
+      "display_text": "Llamar Soporte"
+    }
+  }'
+```
+
+## Respuesta
+
+<ResponseField name="success" type="boolean">
+  Indica si el mensaje fue enviado exitosamente.
+</ResponseField>
+
+<ResponseField name="messageId" type="string">
+  Identificador único del mensaje enviado.
+</ResponseField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "success": true,
+  "messageId": "msg_123456789"
+}
+```
+
+## Mejores Prácticas
+
+<Warning>
+**Uso Moderado:** Usa botones de llamada con moderación y solo cuando el soporte en vivo sea realmente necesario. Asegúrate de que tu equipo de soporte esté disponible cuando se envíen estos botones.
+</Warning>
+
+## Casos de Uso
+
+- Soporte en vivo urgente
+- Consultas complejas que requieren explicación verbal
+- Servicio al cliente personalizado
+- Escalación de problemas técnicos
+

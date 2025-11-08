@@ -1,0 +1,98 @@
+---
+title: 'Estado de usuario'
+description: 'Consulta y actualiza el estado de un usuario'
+---
+
+## Descripción
+
+Gestiona el estado operativo de un usuario dentro de tu bot. Puedes consultar si un contacto está en modo manual o automático y actualizar esta configuración para controlar quién responde las conversaciones.
+
+## Obtener el Estado de un Usuario
+
+### Endpoint
+
+```
+GET https://api.jelou.ai/v1/users/{userId}/state
+```
+
+### Parámetros de Ruta
+
+<ParamField path="userId" type="string" required>
+  Número de teléfono del usuario (sin el signo `+`).
+</ParamField>
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "id": "573001234567",
+  "names": "John Doe",
+  "botId": "bot-12345",
+  "groupId": "grp-67890",
+  "state": "auto"
+}
+```
+
+## Cambiar el Estado de un Usuario
+
+### Endpoint
+
+```
+POST https://api.jelou.ai/v1/users/state
+```
+
+### Cuerpo de la Solicitud
+
+<ParamField body="ttl" type="number">
+  Tiempo en segundos que permanecerá el estado manual antes de expirar automáticamente.
+</ParamField>
+
+<ParamField body="botId" type="string" required>
+  Identificador del bot asociado al usuario.
+</ParamField>
+
+<ParamField body="userId" type="string" required>
+  Número de teléfono del usuario (sin el signo `+`).
+</ParamField>
+
+<ParamField body="state" type="string" required>
+  Estado objetivo. Valores permitidos: `"manual"` o `"auto"`.
+</ParamField>
+
+### Ejemplo de Solicitud
+
+```bash cURL
+curl --request POST \
+  --url https://api.jelou.ai/v1/users/state \
+  --header 'Authorization: Basic <Base64Encoded clientId:clientSecret>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "ttl": 3600,
+    "botId": "bot-12345",
+    "userId": "573001234567",
+    "state": "manual"
+  }'
+```
+
+### Ejemplo de Respuesta
+
+```json
+{
+  "id": "573001234567",
+  "names": "John Doe",
+  "botId": "bot-12345",
+  "groupId": "grp-67890",
+  "state": "manual"
+}
+```
+
+<Warning>
+Cuando un usuario está en estado `manual`, el bot deja de responder automáticamente y es necesario enviar mensajes manuales usando los endpoints de envío. Asegúrate de coordinar el cambio de estado con tu equipo de soporte.
+</Warning>
+
+## Errores Comunes
+
+- `400` - No se pudo obtener o actualizar el estado del usuario.
+- `401` - Credenciales inválidas o faltantes.
+- `404` - Usuario o bot no encontrados.
+
