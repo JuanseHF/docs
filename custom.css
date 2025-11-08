@@ -68,3 +68,17 @@ section h6,
   font-family: var(--font-family-headings-custom) !important;
 }
 
+/* Hide "Powered by Mintlify" footer text */
+footer a[href*="mintlify"],
+footer a[href*="mintlify.com"],
+footer a[href*="mintlify.io"],
+footer [class*="powered"],
+footer [class*="Powered"],
+footer [class*="mintlify"],
+footer [class*="Mintlify"],
+footer p:has(a[href*="mintlify"]),
+footer div:has(a[href*="mintlify"]) {
+  display: none !important;
+  visibility: hidden !important;
+}
+

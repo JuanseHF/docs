@@ -83,10 +83,7 @@
       "anchors": []
     }
   },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
-  },
+  "logo": "/images/logo.svg",
   "navbar": {
     "links": [
       {
@@ -96,7 +93,7 @@
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
+      "label": "Empezar",
       "href": "https://dashboard.mintlify.com"
     }
   },
@@ -113,6 +110,7 @@
    ]
   },
   "footer": {
+    "poweredBy": false,
     "socials": {
       "x": "https://x.com/mintlify",
       "github": "https://github.com/mintlify",
