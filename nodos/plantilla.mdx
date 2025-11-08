@@ -1,0 +1,126 @@
+---
+title: "Nodo Plantilla"
+description: "Utiliza plantillas predefinidas para mensajes estructurados en Jelou"
+---
+
+## Descripción
+
+El nodo **Plantilla** te permite utilizar plantillas predefinidas para crear mensajes estructurados de forma rápida y consistente. Las plantillas están diseñadas para casos de uso comunes y pueden personalizarse según tus necesidades.
+
+## Características principales
+
+- Plantillas predefinidas para casos comunes
+- Personalización de contenido
+- Consistencia en el formato
+- Ahorro de tiempo en la creación
+
+## Uso básico
+
+Utiliza el nodo Plantilla cuando necesites:
+
+- Crear mensajes estructurados rápidamente
+- Mantener consistencia en el formato
+- Usar diseños probados y efectivos
+- Ahorrar tiempo en la configuración
+
+## Configuración
+
+### Propiedades principales
+
+Las propiedades principales del nodo Plantilla incluyen:
+
+- **Tipo de plantilla**: La plantilla predefinida a utilizar
+- **Contenido personalizado**: Texto y datos específicos para tu caso
+- **Variables**: Valores dinámicos que se insertan en la plantilla
+- **Estilo**: Opciones de personalización visual (opcional)
+
+## Tipos de plantillas disponibles
+
+### Plantilla de bienvenida
+
+Plantilla estándar para mensajes de bienvenida.
+
+```
+Plantilla: Bienvenida
+Variables:
+- nombre_usuario
+- mensaje_personalizado
+```
+
+### Plantilla de confirmación
+
+Plantilla para confirmar acciones del usuario.
+
+```
+Plantilla: Confirmación
+Variables:
+- accion_realizada
+- detalles_adicionales
+- siguiente_paso
+```
+
+### Plantilla de notificación
+
+Plantilla para enviar notificaciones importantes.
+
+```
+Plantilla: Notificación
+Variables:
+- titulo
+- mensaje
+- accion_opcional
+```
+
+### Plantilla de recordatorio
+
+Plantilla para recordatorios y seguimientos.
+
+```
+Plantilla: Recordatorio
+Variables:
+- evento_recordado
+- fecha_hora
+- accion_requerida
+```
+
+## Ejemplos de uso
+
+### Plantilla de bienvenida personalizada
+
+```
+Tipo: Bienvenida
+Contenido:
+¡Hola {{nombre}}! Bienvenido a Jelou.
+Estamos emocionados de tenerte aquí.
+```
+
+### Plantilla de confirmación
+
+```
+Tipo: Confirmación
+Contenido:
+Tu pedido #{{numero_pedido}} ha sido confirmado.
+Recibirás una actualización cuando sea enviado.
+```
+
+<Tip>
+Personaliza siempre las plantillas con información relevante para tu caso específico. Las plantillas son un punto de partida, no una solución única.
+</Tip>
+
+<Warning>
+Asegúrate de que todas las variables requeridas estén definidas antes de usar una plantilla. Las variables faltantes pueden causar errores en el mensaje.
+</Warning>
+
+## Mejores prácticas
+
+- Revisa y personaliza las plantillas según tus necesidades
+- Verifica que todas las variables estén correctamente definidas
+- Mantén la consistencia al usar plantillas similares
+- Prueba las plantillas antes de usarlas en producción
+- Considera crear tus propias plantillas personalizadas para casos específicos
+
+## Próximos pasos
+
+- Aprende a combinar plantillas con [otros nodos](/nodos/introduction) para flujos complejos
+- Descubre cómo crear [plantillas personalizadas](/nodos/introduction) para tus necesidades específicas
+

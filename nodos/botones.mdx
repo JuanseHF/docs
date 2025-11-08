@@ -1,0 +1,122 @@
+---
+title: "Nodo Botones"
+description: "Crea botones interactivos para guiar las acciones de los usuarios en Jelou"
+---
+
+## Descripción
+
+El nodo **Botones** te permite crear botones interactivos que los usuarios pueden presionar para realizar acciones específicas. Es fundamental para crear conversaciones interactivas y guiar el flujo.
+
+## Características principales
+
+- Botones con acciones personalizables
+- Múltiples tipos de botones
+- URLs, llamadas telefónicas y acciones personalizadas
+- Diseño y estilo personalizables
+
+## Uso básico
+
+Utiliza el nodo Botones cuando necesites:
+
+- Guiar a los usuarios a acciones específicas
+- Proporcionar acceso rápido a funciones
+- Crear navegación interactiva
+- Facilitar la toma de decisiones del usuario
+
+## Configuración
+
+### Propiedades principales
+
+Las propiedades principales del nodo Botones incluyen:
+
+- **Texto del botón**: El texto que se muestra en el botón
+- **Tipo de acción**: URL, teléfono, acción personalizada, etc.
+- **Destino**: URL, número de teléfono o acción a ejecutar
+- **Estilo**: Apariencia visual del botón (opcional)
+- **Icono**: Icono opcional para el botón
+
+## Tipos de botones
+
+### Botón de URL
+
+Abre un enlace web cuando se presiona.
+
+```
+[Botón: Visitar sitio web]
+Acción: Abrir URL
+Destino: https://jelou.com
+```
+
+### Botón de teléfono
+
+Inicia una llamada telefónica.
+
+```
+[Botón: Llamar ahora]
+Acción: Llamar
+Destino: +34 123 456 789
+```
+
+### Botón de acción
+
+Ejecuta una acción personalizada en el flujo.
+
+```
+[Botón: Continuar]
+Acción: Navegar a siguiente paso
+Destino: nodo_siguiente
+```
+
+### Botón de respuesta rápida
+
+Proporciona respuestas predefinidas.
+
+```
+[Botón: Sí] [Botón: No]
+```
+
+## Ejemplos de uso
+
+### Botones de navegación
+
+```
+¿Qué te gustaría hacer?
+[Botón: Ver productos] [Botón: Contactar soporte]
+```
+
+### Botón de llamada a la acción
+
+```
+[Botón: Comenzar ahora]
+Acción: Iniciar proceso de registro
+```
+
+### Botones de respuesta
+
+```
+¿Estás satisfecho con nuestro servicio?
+[Botón: Sí, muy satisfecho]
+[Botón: Sí, satisfecho]
+[Botón: No, necesito ayuda]
+```
+
+<Tip>
+Mantén el texto de los botones corto y claro. Idealmente, usa 1-3 palabras que describan claramente la acción.
+</Tip>
+
+<Warning>
+No uses demasiados botones a la vez. Se recomienda mostrar entre 2 y 4 botones para evitar confusión y mejorar la usabilidad.
+</Warning>
+
+## Mejores prácticas
+
+- Usa texto descriptivo y claro en los botones
+- Limita el número de botones por mensaje
+- Organiza los botones de manera lógica
+- Proporciona feedback visual cuando sea posible
+
+## Próximos pasos
+
+- Aprende a combinar botones con [texto](/nodos/texto) para contexto adicional
+- Descubre cómo usar [call to action](/nodos/call-to-action) para acciones destacadas
+

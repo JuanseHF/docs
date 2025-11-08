@@ -1,0 +1,106 @@
+---
+title: "Nodo Pregunta"
+description: "Recopila información de los usuarios mediante preguntas interactivas en Jelou"
+---
+
+## Descripción
+
+El nodo **Pregunta** te permite hacer preguntas a tus usuarios y recopilar sus respuestas. Es fundamental para crear conversaciones interactivas y recopilar datos.
+
+## Características principales
+
+- Múltiples tipos de preguntas
+- Validación de respuestas
+- Respuestas opcionales y requeridas
+- Almacenamiento de respuestas en variables
+
+## Uso básico
+
+Utiliza el nodo Pregunta cuando necesites:
+
+- Recopilar información del usuario
+- Confirmar acciones importantes
+- Obtener preferencias o configuraciones
+- Validar datos antes de continuar
+
+## Configuración
+
+### Propiedades principales
+
+Las propiedades principales del nodo Pregunta incluyen:
+
+- **Texto de la pregunta**: La pregunta que se mostrará al usuario
+- **Tipo de respuesta**: Texto libre, opciones múltiples, número, fecha, etc.
+- **Validación**: Reglas para validar la respuesta del usuario
+- **Requerido**: Si la pregunta es obligatoria o opcional
+- **Variable de almacenamiento**: Nombre de la variable donde se guardará la respuesta
+
+## Tipos de preguntas
+
+### Pregunta de texto libre
+
+Permite al usuario escribir una respuesta libre.
+
+```
+¿Cuál es tu nombre completo?
+```
+
+### Pregunta de opción múltiple
+
+El usuario selecciona una opción de una lista predefinida.
+
+```
+¿Cuál es tu método de pago preferido?
+- Tarjeta de crédito
+- Transferencia bancaria
+- Efectivo
+```
+
+### Pregunta numérica
+
+Solo acepta respuestas numéricas.
+
+```
+¿Cuántos años tienes?
+```
+
+### Pregunta de fecha
+
+Recopila fechas específicas.
+
+```
+¿Cuándo te gustaría recibir el servicio?
+```
+
+## Ejemplos de uso
+
+### Pregunta simple
+
+```
+Pregunta: ¿Cuál es tu correo electrónico?
+Tipo: Email
+Requerido: Sí
+```
+
+### Pregunta con validación
+
+```
+Pregunta: ¿Cuál es tu número de teléfono?
+Tipo: Teléfono
+Validación: Formato internacional
+Requerido: Sí
+```
+
+<Tip>
+Utiliza preguntas requeridas para información crítica y preguntas opcionales para datos adicionales que mejoren la experiencia.
+</Tip>
+
+<Warning>
+Evita hacer demasiadas preguntas seguidas, ya que puede resultar abrumador para el usuario. Considera dividir las preguntas en múltiples pasos.
+</Warning>
+
+## Próximos pasos
+
+- Aprende a usar las respuestas en [otros nodos](/nodos/introduction) del flujo
+- Descubre cómo crear [flujos condicionales](/nodos/introduction) basados en las respuestas
+

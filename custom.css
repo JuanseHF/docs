@@ -1,0 +1,70 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap');
+
+/* CSS Variables for font families */
+:root {
+  --font-family-headings-custom: "Google Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-family-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+/* Apply Inter to body and all text elements */
+body,
+p,
+span,
+div,
+li,
+td,
+th,
+label,
+input,
+textarea,
+select,
+button {
+  font-family: var(--font-family-body);
+}
+
+/* Apply Google Sans to all headings - comprehensive selectors */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+article h1,
+article h2,
+article h3,
+article h4,
+article h5,
+article h6,
+main h1,
+main h2,
+main h3,
+main h4,
+main h5,
+main h6,
+section h1,
+section h2,
+section h3,
+section h4,
+section h5,
+section h6,
+[class*="heading"],
+[class*="Heading"],
+[class*="title"],
+[class*="Title"],
+[class*="h1"],
+[class*="h2"],
+[class*="h3"],
+[class*="h4"],
+[class*="h5"],
+[class*="h6"],
+[class*="H1"],
+[class*="H2"],
+[class*="H3"],
+[class*="H4"],
+[class*="H5"],
+[class*="H6"] {
+  font-family: var(--font-family-headings-custom) !important;
+}
+

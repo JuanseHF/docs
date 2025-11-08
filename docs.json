@@ -14,15 +14,26 @@
         "tab": "Guides",
         "groups": [
           {
-            "group": "Getting started",
+            "group": "Empezando",
+            "icon": "rocket",
             "pages": [
-              "index",
-              "quickstart",
-              "development"
+              "introduccion",
+              "tu-primer-app",
+              "prueba-tu-app"
             ]
           },
           {
-            "group": "Customization",
+            "group": "Nodos",
+            "icon": "sitemap",
+            "pages": [
+              "nodos/mensajes",
+              "nodos/logica",
+              "nodos/otros"
+            ]
+          },
+          {
+            "group": "Agentes IA",
+            "icon": "robot",
             "pages": [
               "essentials/settings",
               "essentials/navigation"
@@ -69,18 +80,7 @@
       }
     ],
     "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
+      "anchors": []
     }
   },
   "logo": {
@@ -118,5 +118,14 @@
       "github": "https://github.com/mintlify",
       "linkedin": "https://linkedin.com/company/mintlify"
     }
-  }
+  },
+  "head": [
+    {
+      "tag": "link",
+      "attributes": {
+        "rel": "stylesheet",
+        "href": "/custom.css"
+      }
+    }
+  ]
 }
