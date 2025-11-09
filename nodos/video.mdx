@@ -1,79 +1,22 @@
 ---
 title: "Nodo Video"
-description: "Incluye contenido de video en tus conversaciones de Jelou"
+description: "Envía videos a tus usuarios"
 ---
-
-## Descripción
-
-El nodo **Video** te permite compartir videos con tus usuarios. Soporta diferentes formatos y puede incluir descripciones y controles de reproducción.
-
-## Características principales
-
-- Soporte para múltiples formatos de video
-- Controles de reproducción personalizables
-- Subtítulos y descripciones opcionales
-- Enlaces a videos externos o archivos subidos
-
-## Uso básico
-
-Utiliza el nodo Video cuando necesites:
-
-- Compartir tutoriales o demostraciones
-- Mostrar productos en acción
-- Proporcionar contenido educativo
-- Añadir elementos multimedia ricos a tus conversaciones
 
 ## Configuración
 
-### Propiedades principales
+- **Archivo o URL**: Puedes subir un archivo de video o usar una URL pública
+- **Caption** (opcional): Texto opcional que aparece junto al video
 
-Las propiedades principales del nodo Video incluyen:
+## Limitaciones
 
-- **URL del video**: Enlace al video o archivo subido
-- **Descripción**: Texto descriptivo del contenido del video
-- **Subtítulos**: Archivo de subtítulos opcional
-- **Reproducción automática**: Si el video debe comenzar automáticamente
-- **Controles**: Opciones de control de reproducción
+| Formatos soportados | Tamaño máximo |
+|---------------------|---------------|
+| `video/mp4`, `video/3gp` | 16MB |
 
-## Formatos soportados
-
-- **MP4**: Formato estándar y ampliamente compatible
-- **WebM**: Formato moderno con buena compresión
-- **OGG**: Formato de código abierto
-- **Enlaces externos**: YouTube, Vimeo y otras plataformas
-
-## Ejemplos de uso
-
-### Video simple
-
-```
-[Video: Tutorial de bienvenida]
-```
-
-### Video con descripción
-
-```
-[Video: Demostración del producto]
-Descripción: Este video muestra cómo usar nuestro producto paso a paso.
-```
+### Requisitos de URL
 
 <Warning>
-Los archivos de video pueden ser grandes. Asegúrate de optimizar los videos antes de subirlos y considera usar servicios de alojamiento de video para mejor rendimiento.
+Si usas una URL, debe ser públicamente accesible vía HTTPS, no debe requerir autenticación, y debe apuntar directamente al archivo (no a una página HTML).
 </Warning>
-
-<Tip>
-Para videos largos, considera dividirlos en segmentos más cortos o usar enlaces a plataformas de video como YouTube para mejor rendimiento.
-</Tip>
-
-## Mejores prácticas
-
-- Mantén los videos cortos y enfocados (idealmente menos de 2 minutos)
-- Proporciona siempre una descripción textual del contenido
-- Incluye subtítulos para mejorar la accesibilidad
-- Optimiza los videos para diferentes velocidades de conexión
-
-## Próximos pasos
-
-- Aprende a combinar videos con [texto](/nodos/texto) para contexto adicional
-- Descubre cómo usar [audio](/nodos/audio) para contenido solo de audio
 

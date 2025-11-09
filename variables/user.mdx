@@ -1,0 +1,46 @@
+---
+title: User
+description: Variables - User
+---
+
+El objeto `User` te permite consultar información del contacto que está interactuando con tu flujo, como su nombre, número de teléfono y metadatos del canal.
+
+## Datos disponibles
+
+Los datos disponibles dependen del canal, pero un ejemplo típico es:
+
+```json
+{
+  "id": "593997990471",
+  "names": "Juan Pérez",
+}
+```
+
+## Usar variables de usuario
+
+Puedes acceder a cualquier propiedad del usuario con la sintaxis `{{$user.propiedad}}`:
+
+- `{{$user.id}}` muestra el identificador único del usuario para el canal. En Whatsapp es el número del usuario. 
+- `{{$user.names}}` muestra el nombre del usuario.
+
+<Info>
+En canales como WhatsApp, `{{$user.id}}` equivale al número del contacto sin signos ni espacios. Por ejemplo, `+593-997-524-990` se representa como `593997524990`.
+</Info>
+
+## User en nodos de código
+
+Dentro de los nodos de código, tienes disponible el objeto `User` a través de `$user`:
+
+```js
+// Accede al id del usuario
+const id = $user.get('id')
+
+// Accede al nombre del usuario
+const name = $user.get('names')
+```
+
+<Info>
+El objeto `User` es de solo lectura. Si quieres persistir información nueva del contacto, guarda esos datos en `Memory` o `Context`.
+</Info>
+
+

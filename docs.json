@@ -44,8 +44,10 @@
             "icon": "code",
             "pages": [
               "variables/guia-rapida",
-              "variables/memory",
               "variables/context",
+              "variables/memory",
+              "variables/user",
+              "variables/message",
               "variables/input-output"
             ]
           },

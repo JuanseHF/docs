@@ -1,79 +1,21 @@
 ---
 title: "Nodo Audio"
-description: "Envía mensajes de voz o archivos de audio a tus usuarios en Jelou"
+description: "Envía archivos de audio a tus usuarios"
 ---
-
-## Descripción
-
-El nodo **Audio** te permite compartir archivos de audio y mensajes de voz con tus usuarios. Ideal para contenido que se consume mientras se realizan otras actividades.
-
-## Características principales
-
-- Soporte para múltiples formatos de audio
-- Mensajes de voz grabados
-- Controles de reproducción
-- Transcripción opcional
-
-## Uso básico
-
-Utiliza el nodo Audio cuando necesites:
-
-- Enviar mensajes de voz personalizados
-- Compartir podcasts o contenido de audio
-- Proporcionar instrucciones de audio
-- Añadir elementos de audio a tus conversaciones
 
 ## Configuración
 
-### Propiedades principales
+- **Archivo o URL**: Puedes subir un archivo de audio o usar una URL pública
 
-Las propiedades principales del nodo Audio incluyen:
+## Limitaciones
 
-- **URL del audio**: Enlace al archivo de audio o archivo subido
-- **Descripción**: Texto descriptivo del contenido de audio
-- **Transcripción**: Texto opcional que muestra el contenido del audio
-- **Reproducción automática**: Si el audio debe comenzar automáticamente
-- **Controles**: Opciones de control de reproducción
+| Formatos soportados | Tamaño máximo |
+|---------------------|---------------|
+| `audio/aac`, `audio/mp4`, `audio/mpeg`, `audio/amr`, `audio/ogg` (solo codec opus) | 16MB |
 
-## Formatos soportados
-
-- **MP3**: Formato estándar y ampliamente compatible
-- **WAV**: Formato sin compresión de alta calidad
-- **OGG**: Formato de código abierto
-- **AAC**: Formato con buena compresión
-
-## Ejemplos de uso
-
-### Audio simple
-
-```
-[Audio: Mensaje de bienvenida]
-```
-
-### Audio con transcripción
-
-```
-[Audio: Instrucciones de uso]
-Transcripción: "Para comenzar, presiona el botón de inicio y sigue las indicaciones en pantalla."
-```
-
-<Tip>
-Incluye siempre una transcripción o descripción del contenido de audio para mejorar la accesibilidad y permitir que los usuarios entiendan el contenido sin reproducirlo.
-</Tip>
+### Requisitos de URL
 
 <Warning>
-Los archivos de audio pueden ser grandes. Optimiza los archivos antes de subirlos para evitar tiempos de carga lentos.
+Si usas una URL, debe ser públicamente accesible vía HTTPS, no debe requerir autenticación, y debe apuntar directamente al archivo (no a una página HTML).
 </Warning>
-
-## Mejores prácticas
-
-- Mantén los mensajes de audio concisos y claros
-- Proporciona siempre una transcripción o descripción textual
-- Optimiza los archivos de audio para web
-- Considera la duración del audio (idealmente menos de 3 minutos)
-
-## Próximos pasos
-
-- Aprende a combinar audio con [texto](/nodos/texto) para contexto adicional
-- Descubre cómo usar [videos](/nodos/video) para contenido multimedia completo
 

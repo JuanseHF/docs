@@ -1,59 +1,17 @@
 ---
 title: "Nodo Texto"
-description: "Envía mensajes de texto simples y personalizados a tus usuarios en Jelou"
+description: "Envía mensajes de texto simples a tus usuarios"
 ---
-
-## Descripción
-
-El nodo **Texto** te permite enviar mensajes de texto simples a tus usuarios. Es el tipo de nodo más básico y versátil para comunicarte con tus usuarios.
-
-## Características principales
-
-- Mensajes de texto personalizables
-- Soporte para variables dinámicas
-- Formato de texto básico
-- Integración con otros nodos
-
-## Uso básico
-
-Utiliza el nodo Texto cuando necesites:
-
-- Enviar mensajes informativos
-- Proporcionar instrucciones paso a paso
-- Confirmar acciones del usuario
-- Personalizar mensajes con variables
 
 ## Configuración
 
-### Propiedades principales
+- **Contenido**: El texto del mensaje que se enviará al usuario
 
-Las propiedades principales del nodo Texto incluyen:
+## Usar variables en tus mensajes
 
-- **Contenido del mensaje**: El texto que se enviará al usuario
-- **Variables**: Valores dinámicos que se pueden insertar en el mensaje
-- **Formato**: Opciones básicas de formato de texto
-
-## Ejemplos de uso
-
-### Mensaje simple
+Puedes usar cualquier tipo de variables en tus mensajes.
 
 ```
-Bienvenido a Jelou. ¿En qué puedo ayudarte hoy?
+Hola {{$user.names}}, el status de tu pedido es: {{$memory.pedido.status}}
 ```
-
-### Mensaje con variables
-
-```
-Hola {{nombre}}, tu pedido #{{numero_pedido}} está siendo procesado.
-```
-
-<Tip>
-Utiliza variables para personalizar los mensajes y hacer que cada conversación se sienta única para cada usuario.
-</Tip>
-
-## Próximos pasos
-
-- Aprende a [conectar nodos](/nodos/introduction) para crear flujos complejos
-- Descubre cómo usar [variables dinámicas](/nodos/introduction) en tus mensajes
-- Explora otros tipos de nodos para enriquecer tus conversaciones
 

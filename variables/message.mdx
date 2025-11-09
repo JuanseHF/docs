@@ -1,0 +1,105 @@
+---
+title: Message
+description: Variables - Message
+---
+
+La variable `Message` expone el último mensaje que envió el usuario y que activó tu skill. Es ideal cuando necesitas reaccionar al texto, adjuntos o metadatos del mensaje entrante.
+
+## Estructura del mensaje
+
+El objeto cambia según el tipo de mensaje que recibas. A continuación encontrarás ejemplos reales devueltos por WhatsApp.
+
+### Texto
+
+```json
+{
+  "type": "TEXT",
+  "text": "Hola"
+}
+```
+
+### Audio
+
+> El audio se transcribe automáticamente cuando es posible. Recibirás tanto la URL del archivo como el texto reconocido.
+
+```json
+{
+  "type": "AUDIO",
+  "mediaUrl": "https://cdn.jelou.ai/...mp3",
+  "contentType": "mp3",
+  "text": "Esto es un audio"
+}
+```
+
+### Imagen
+
+```json
+{
+  "type": "IMAGE",
+  "mediaUrl": "https://cdn.jelou.ai/....png",
+  "caption": "Esto es una imagen",
+  "width": 680,
+  "height": 462,
+  "length": 58137
+}
+```
+
+### Video
+
+```json
+{
+  "type": "VIDEO",
+  "mediaUrl": "https://cdn.jelou.ai/....mp4",
+  "caption": "Esto es un video"
+}
+```
+
+### Ubicación
+
+```json
+{
+  "type": "LOCATION",
+  "lat": "-2.1646540164948",
+  "lng": "-79.895797729492",
+  "url": "http://maps.google.com/maps..."
+}
+```
+
+### Archivo
+
+```json
+{
+  "type": "FILE",
+  "mediaUrl": "https://cdn.jelou.ai/...",
+  "mimeType": "application/pdf",
+  "caption": "Esto es un archivo"
+}
+```
+
+## Acceder al último mensaje
+
+Puedes acceder al mensaje desde cualquier nodo con la sintaxis `{{$message.propiedad}}`:
+
+- `{{$message.type}}` indica el tipo (`TEXT`, `IMAGE`, `AUDIO`, etc.).
+- `{{$message.text}}` devuelve el contenido del mensaje para tipos `TEXT` y la transcripción de `AUDIO`.
+- `{{$message.mediaUrl}}` expone la URL del archivo adjunto (imagen, audio, video o documento).
+- `{{$message.caption}}` muestra el texto adicional enviado junto al archivo.
+- `{{$message.lat}}` y `{{$message.lng}}` entregan las coordenadas cuando el tipo es `LOCATION`.
+
+Si el mensaje contiene propiedades adicionales (por ejemplo `length`, `mimeType`), accede a ellas con la misma notación de punto: `{{$message.mimeType}}`.
+
+## Message en nodos de código
+
+Dentro de un nodo de código accede a cada propiedad con `$message.get('propiedad', [valorPorDefecto])`:
+
+```js
+const primerMensaje = $message.get('text')
+const tipoMensaje = $message.get('type')
+const urlAdjunto = $message.get('mediaUrl')
+```
+
+<Info>
+`Message` siempre muestra el mensaje más reciente que el usuario haya enviado. Si es la primera vez que el usuario escribe, ese primer mensaje también será considerado el “último mensaje”.
+</Info>
+
+

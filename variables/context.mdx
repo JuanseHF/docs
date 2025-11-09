@@ -1,10 +1,60 @@
 ---
-title: Context
-description: Variables - Context
+title: Contexto
+description: Variables - Contexto
 ---
 
-# Context
+El contexto sirve para guardar variables que persisten entre skills, tools y nodos durante 24h (la duración de una sesión de WhatsApp).
 
-Explica cómo se define y utiliza el contexto de variables.
+## Leer variables
+
+Dentro de cualquier nodo puedes acceder al contexto con la sintaxis `{{$context.nombreVariable}}`. Por ejemplo, si las variables en contexto son:
+
+```json
+{
+  "nombre": "Juan",
+  "ultimoPedido": { "id": "PED-123", "estado": "en camino" }
+}
+```
+
+Entonces:
+
+- `{{$context.nombre}}` muestra `Juan`.
+- `{{$context.ultimoPedido.estado}}` muestra `en camino`.
+
+## Contexto en nodos de código
+
+Los métodos de contexto funcionan diferente dentro del nodo código:
+
+- `$context.get(key, [defaultValue])`
+- `$context.set(key, value)`
+
+Por ejemplo, para obtener variables de contexto:
+
+```js
+// Obtiene la variable nombre del contexto
+const nombre = $context.get('nombre')
+
+// Busca la variable 'nombre'
+// Si no la encuenta, setea el valor como 'Juan'
+const nombre = $context.get('nombre', 'Juan')
+```
+
+Para guardar variables dentro de un nodo código:
+```js
+// Actualizar una variable existente
+$context.set('ultimoPedido.estado', 'entregado')
+
+// Guardar un JSON
+const usuario = { nombre: 'Juan', plan: 'gold' }
+$context.set('usuario', usuario)
+
+// Guardar un array
+const pedidos = ['PED-123', 'PED-456']
+$context.set('pedidos', pedidos)
+```
+
+<Info>
+Puedes usar la sintaxis de objetos con el punto para acceder a llaves internas del contexto.
+</Info>
 
 

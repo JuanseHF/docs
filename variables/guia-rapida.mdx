@@ -3,18 +3,19 @@ title: Guía rápida
 description: Introducción rápida a Variables — qué son, cuándo usarlas y cómo.
 ---
 
-# Guía rápida
+Las variables son clave para programar aplicaciones conversacionales. Te permiten compartir información entre nodos, skills o tools.
 
-Esta guía te da una visión rápida de cómo funcionan las variables:
+ Principalmente, vas a tratar con los siguientes tipos de variables en Brain Studio:
 
-- Qué son y para qué sirven
-- Dónde se almacenan y cómo persisten
-- Cómo leer y escribir valores en tus flujos
+- [Context](/variables/context): Temporal, solo vive dentro del flujo específico en el que la creas.
+- [Memory](/variables/memory): Persiste durante 24h y entre diferentes skills, tools e interacciones.
+- [User](/variables/user): Te permite acceder a datos del usuario como nombre, teléfono u otros.
+- [Message](/variables/message): Permite acceder al último mensaje enviado por el usuario.
+- [Input/Output](/variables/input-output): Útil para construir tools personalizados en la plataforma, exponiendo entradas que recibes del flujo y salidas que regresas al mismo.
 
-Sigue con los temas específicos:
-
-- [Memory](/variables/memory)
-- [Context](/variables/context)
-- [Input/Output](/variables/input-output)
+<Info>
+Las variables mencionadas arriba están relacionadas al usuario actual de la conversación. Es decir, sus valores corresponden a los datos y contexto de ese usuario en particular.
+</Info>
 
 
+A continuación, puedes leer las guías de cómo guardar, leer y actualizar variables en cada caso.

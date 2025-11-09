@@ -3,8 +3,40 @@ title: Input/Output
 description: Variables - Input and Output
 ---
 
-# Input/Output
+Las variables `Input` y `Output` son clave cuando construyes tools en Brain Studio. Te permiten recibir datos desde el flujo que invoca tu tool y regresar resultados al finalizar su ejecución.
 
-Documenta cómo se manejan las entradas y salidas de variables.
+## Inputs
+
+Los valores de entrada se definen desde el administrador de inputs mientras configuras tu tool. Cada input que declares estará disponible en tiempo de ejecución a través de:
+
+- `{{$input.nombre}}` dentro de cualquier nodo.
+- `$input.get('nombre', [valorPorDefecto])` dentro de nodos de código.
+
+Por ejemplo, si configuraste un input llamado `ciudad`:
+
+```js
+// Obtiene input ciudad
+const ciudad = $input.get('ciudad')
+
+// Obtiene input ciudad
+// Si no lo encuentra, setea el valor como 'Quito'
+const ciudad = $input.get('ciudad', 'Quito')
+
+```
+
+## Outputs
+
+Los outputs de una tool se definen desde un nodo de código usando `$output.set(clave, valor)`. Estos valores quedan disponibles para el flujo luego de que el tool termina.
+
+```js
+const data = $memory.get('apiResponse')
+$output.set('data', data)
+```
+
+Puedes establecer múltiples outputs llamando a `$output.set` varias veces (uno por cada clave).
+
+<Info>
+Asegúrate de que los nombres que uses en `$output.set('clave', valor)` coincidan con los outputs que declaraste al configurar la tool; así el flujo podrá consumirlos sin errores.
+</Info>
 
 

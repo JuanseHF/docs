@@ -3,8 +3,67 @@ title: Memory
 description: Variables - Memory
 ---
 
-# Memory
+La memoria sirve para guardar variables que persisten entre skills, tools y nodos durante 24h (la duración de una sesión de WhatsApp).
 
-Aquí describes cómo manejar la memoria de variables en tu proyecto.
+## Guardar variables
+
+Para guardar variables en memoria utiliza el nodo Variable dentro de `Lógica`. En `Variable` coloca el nombre de la variable y en `Valor` lo que quieres guardar; puede ser texto plano, otra variable de memoria o un dato del contexto.
+
+```md
+Variable: nombre
+Valor: {{$context.usuario.nombre}}
+```
+
+## Leer variables
+
+Dentro de cualquier nodo puedes acceder a la memoria con la sintaxis `{{$memory.nombreVariable}}`. Por ejemplo, si las variables en memoria son:
+
+```json
+{
+  "nombre": "Juan",
+  "ultimoPedido": { "id": "PED-123", "estado": "en camino" }
+}
+```
+
+Entonces:
+
+- `{{$memory.nombre}}` muestra `Juan`.
+- `{{$memory.ultimoPedido.estado}}` muestra `en camino`.
+
+## Memoria en nodos de código
+
+Los métodos de memoria funcionan diferente dentro del nodo código:
+
+- `$memory.get(key, [defaultValue])`
+- `$memory.set(key, value)`
+
+Por ejemplo, para obtener variables de memoria:
+
+```js
+// Obtiene la variable nombre de memoria
+const nombre = $memory.get('nombre')
+
+// Busca la variable 'nombre'
+// Si no la encuenta, setea el valor como 'Juan'
+const nombre = $memory.get('nombre', 'Juan')
+```
+
+Para guardar variables dentro de un nodo código:
+```js
+// Actualizar una variable existente
+$memory.set('ultimoPedido.estado', 'entregado')
+
+// Guardar un JSON
+const usuario = { nombre: 'Juan', plan: 'gold' }
+$memory.set('usuario', usuario)
+
+// Guardar un array
+const pedidos = ['PED-123', 'PED-456']
+$memory.set('pedidos', pedidos)
+```
+
+<Info>
+Puedes usar la sintaxis de objetos con el punto para acceder a llaves internas.
+</Info>
 
 

@@ -1,71 +1,22 @@
 ---
 title: "Nodo Imagen"
-description: "Comparte imágenes estáticas o animadas en tus conversaciones de Jelou"
+description: "Envía imágenes a tus usuarios"
 ---
-
-## Descripción
-
-El nodo **Imagen** te permite compartir imágenes con tus usuarios. Soporta diferentes formatos de imagen y puede incluir descripciones y texto adicional.
-
-## Características principales
-
-- Soporte para múltiples formatos (JPG, PNG, GIF, WebP)
-- Imágenes estáticas y animadas
-- Texto descriptivo opcional
-- Enlaces a imágenes externas o archivos subidos
-
-## Uso básico
-
-Utiliza el nodo Imagen cuando necesites:
-
-- Mostrar productos o servicios visualmente
-- Ilustrar instrucciones o tutoriales
-- Compartir infografías o gráficos
-- Añadir elementos visuales a tus conversaciones
 
 ## Configuración
 
-### Propiedades principales
+- **Archivo o URL**: Puedes subir un archivo de imagen o usar una URL pública
+- **Caption** (opcional): Texto opcional que aparece junto a la imagen
 
-Las propiedades principales del nodo Imagen incluyen:
+## Limitaciones
 
-- **URL de la imagen**: Enlace a la imagen o archivo subido
-- **Texto alternativo**: Descripción de la imagen para accesibilidad
-- **Pie de foto**: Texto opcional que aparece debajo de la imagen
-- **Formato**: Tipo de imagen (estática o animada)
+| Formatos soportados | Tamaño máximo |
+|---------------------|---------------|
+| `image/jpeg`, `image/png` | 5MB |
 
-## Ejemplos de uso
-
-### Imagen simple
-
-```
-[Imagen: Logo de la empresa]
-```
-
-### Imagen con descripción
-
-```
-[Imagen: Diagrama del proceso]
-Descripción: Este diagrama muestra el flujo completo del proceso de registro.
-```
+### Requisitos de URL
 
 <Warning>
-Asegúrate de que las imágenes tengan un tamaño adecuado para evitar tiempos de carga lentos. Se recomienda optimizar las imágenes antes de subirlas.
+Si usas una URL, debe ser públicamente accesible vía HTTPS, no debe requerir autenticación, y debe apuntar directamente al archivo (no a una página HTML).
 </Warning>
-
-## Formatos soportados
-
-- **JPG/JPEG**: Para fotografías y imágenes con muchos colores
-- **PNG**: Para imágenes con transparencia
-- **GIF**: Para imágenes animadas simples
-- **WebP**: Formato moderno con mejor compresión
-
-<Tip>
-Utiliza imágenes optimizadas para web para mejorar la velocidad de carga y la experiencia del usuario.
-</Tip>
-
-## Próximos pasos
-
-- Aprende a combinar imágenes con [texto](/nodos/texto) para mensajes más completos
-- Descubre cómo usar [videos](/nodos/video) para contenido multimedia avanzado
 
