@@ -1,115 +1,20 @@
 ---
 title: "Nodo Call to Action"
-description: "Añade llamadas a la acción para dirigir a los usuarios a acciones específicas en Jelou"
+description: "Crea llamadas a la acción que redirigen a una URL"
 ---
-
-## Descripción
-
-El nodo **Call to Action** (CTA) te permite crear llamadas a la acción destacadas que dirigen a los usuarios hacia acciones específicas e importantes. Es ideal para conversiones y acciones clave.
-
-## Características principales
-
-- Diseño destacado y visualmente atractivo
-- Múltiples tipos de acciones
-- Personalización de estilo y diseño
-- Seguimiento de interacciones
-
-## Uso básico
-
-Utiliza el nodo Call to Action cuando necesites:
-
-- Destacar acciones importantes
-- Aumentar conversiones
-- Guiar a los usuarios hacia pasos críticos
-- Crear puntos de decisión claros
 
 ## Configuración
 
-### Propiedades principales
+- **Encabezado**: Título del mensaje (máximo 60 caracteres)
+- **Contenido**: Mensaje principal (máximo 1024 caracteres)
+- **Pie de página**: Texto del pie de página (máximo 60 caracteres)
+- **Nombre del botón**: Texto que aparecerá en el botón (máximo 18 caracteres)
+- **URL**: URL a la que redirigirá el botón (máximo 4096 caracteres)
 
-Las propiedades principales del nodo Call to Action incluyen:
+## Usar webviews en WhatsApp
 
-- **Texto principal**: Mensaje principal de la llamada a la acción
-- **Texto del botón**: Texto del botón de acción
-- **Tipo de acción**: Registro, compra, descarga, etc.
-- **Destino**: URL o acción a ejecutar
-- **Estilo**: Diseño visual del CTA (destacado, primario, secundario)
+El comportamiento de apertura de la URL depende del estado de verificación de tu cuenta de Meta:
 
-## Tipos de Call to Action
-
-### CTA de registro
-
-Invita a los usuarios a registrarse.
-
-```
-¡Únete a nosotros hoy!
-[Botón: Crear cuenta gratis]
-```
-
-### CTA de compra
-
-Dirige a los usuarios hacia una compra.
-
-```
-Obtén acceso completo ahora
-[Botón: Comprar ahora]
-```
-
-### CTA de descarga
-
-Invita a descargar un recurso.
-
-```
-Descarga nuestra guía gratuita
-[Botón: Descargar PDF]
-```
-
-### CTA de contacto
-
-Fomenta el contacto con el equipo.
-
-```
-¿Tienes preguntas? Estamos aquí para ayudarte
-[Botón: Contactar ahora]
-```
-
-## Ejemplos de uso
-
-### CTA destacado
-
-```
-¡Oferta especial limitada!
-Ahorra 50% en tu primer mes
-[Botón: Aprovechar oferta]
-Estilo: Destacado
-```
-
-### CTA con contexto
-
-```
-Has completado todos los pasos
-Ahora puedes comenzar a usar todas las funciones
-[Botón: Comenzar ahora]
-```
-
-<Tip>
-Usa CTAs de manera estratégica y no excesiva. Demasiados CTAs pueden diluir su efectividad y abrumar al usuario.
-</Tip>
-
-<Warning>
-Asegúrate de que el CTA sea relevante al contexto de la conversación. Los CTAs fuera de contexto pueden frustrar a los usuarios.
-</Warning>
-
-## Mejores prácticas
-
-- Usa lenguaje claro y orientado a la acción
-- Crea un sentido de urgencia cuando sea apropiado
-- Proporciona valor claro en el mensaje
-- Diseña CTAs visualmente destacados pero no intrusivos
-- Prueba diferentes textos y estilos para optimizar conversiones
-
-## Próximos pasos
-
-- Aprende a combinar CTAs con [botones](/nodos/botones) para múltiples opciones
-- Descubre cómo usar [texto](/nodos/texto) para contexto adicional antes del CTA
+- **Cuenta verificada**: La URL se abrirá dentro de un webview integrado en WhatsApp, manteniendo al usuario dentro de la aplicación.
+- **Cuenta no verificada**: La URL se abrirá en el navegador por defecto del dispositivo del usuario.
 

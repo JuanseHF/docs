@@ -86,11 +86,9 @@ Puedes acceder al mensaje desde cualquier nodo con la sintaxis `{{$message.propi
 - `{{$message.caption}}` muestra el texto adicional enviado junto al archivo.
 - `{{$message.lat}}` y `{{$message.lng}}` entregan las coordenadas cuando el tipo es `LOCATION`.
 
-Si el mensaje contiene propiedades adicionales (por ejemplo `length`, `mimeType`), accede a ellas con la misma notación de punto: `{{$message.mimeType}}`.
-
 ## Message en nodos de código
 
-Dentro de un nodo de código accede a cada propiedad con `$message.get('propiedad', [valorPorDefecto])`:
+Dentro de un nodo de código accede a cada propiedad con `$message.get('propiedad')`:
 
 ```js
 const primerMensaje = $message.get('text')
