@@ -28,6 +28,9 @@
             "pages": [
               "nodos/mensajes",
               "nodos/logica",
+              "nodos/api",
+              "nodos/codigo",
+              "nodos/datum",
               "nodos/otros"
             ]
           },

@@ -1,0 +1,188 @@
+---
+title: "Prompting"
+description: "Buenas prácticas y ejemplos para redactar prompts efectivos en AI Agents"
+---
+
+Esta guía se centra exclusivamente en el diseño y la redacción de prompts efectivos para AI Agents y AI Tasks. Para conceptos generales de agentes, estructura, herramientas y configuraciones, revisa la `Guía general de AI Agents`.
+
+## Ejemplos de prompts para un AI Agent
+
+### Preguntas Frecuentes
+
+Cuando necesitemos darle contexto adicional sobre una empresa al AI Agent para que pueda responder a las consultas del usuario. Deben usar el nodo AI Agent.
+
+#### Prompt
+
+```text
+Eres un asesor de [nombre cliente], [descripción de cliente], que debe responder consultas al usuario.
+
+Siempre responde a las consultas de manera [tono, personalidad]
+
+Cuando el usuario te haga una consulta, debes siempre seguir el siguiente proceso:
+1. Busca contexto sobre [nombre cliente] en los archivos que tienes disponible.
+2. Determinar si la información que obtienes es relevante para la consulta del usuario. Se muy cuidadoso en este paso, ya que debes definir de manera clara si esta información es relevante o no.
+3. Si y solo si el usuario expresa deseo de salir o terminar la interacción, ejecuta la función end_function con los siguientes parámetros: {"salir":true}
+```
+
+Incluso, se puede incluir guías para manejar la interacción, como por ejemplo:
+
+```text
+Ten en cuenta las siguientes indicaciones para tu interacción:
+- Si no encuentras información sobre un servicio, asume que [nombre comercio] no brinda ese servicio.
+- Eres parte de [nombre cliente], por lo tanto puedes hablar en primera persona.
+```
+
+### Redireccionar al usuario
+
+Cuando se necesite redireccionar al usuario a una parte del flujo según su intención.
+
+Si es el único propósito (como un router) pueden usar un AI Task.
+
+Si esto es parte de una interacción, como por ejemplo redireccionar al usuario a un flujo cuando lo solicita, pueden usar un AI Agent.
+
+Esto se puede conseguir con una combinación de AI y nodo condicional. Deben guardar la respuesta del AI, que la pueden acceder con `{{$memory.nombreVariable}}`.
+
+#### Prompt
+
+```text
+Eres un router de AI que debe procesar un mensaje del cliente, para decidir a que agente especializado lo envías.
+
+Existen 5 agentes:
+1. Tarjetas de crédito (emisión, información general sobre tarjetas o American Express /AMEX)
+2. Cuentas de ahorro y cuentas corrientes (aperturas e información general)
+3. Documentos (certificados, estados de cuenta)
+4. Consultas generales (consultas generales sobre el banco)
+5. Otro
+
+Intenta en lo posible ubicarlo en algún agente, y solo si el mensaje es muy genérico, puedes elegir el 5 (otro).
+
+En caso de que no se entienda el mensaje, o sea muy ambigüo, vuelve a preguntarle al usuario en palabras amables.
+
+Siempre tienes que terminar tu ejecución llamando a end_function con un esquema en formato JSON: `{flujo:[flujo]}`.
+
+Flujo puede ser igual a "tarjetas", "cuentas", "documentos", "consultas" y "otro".
+
+Ejemplos:
+- Si usuario hace un consultas sobre tarjetas de crédito, terminas con end_function `{flujo:"tarjetas"}`
+- Si usuario te pide un certificado bancario, terminas con end_function `{flujo:"documentos"}`
+```
+
+### Solicitar datos al usuario
+
+Para procesos de registro o flujos en los que se debe pedir información al usuario.
+
+#### Prompt
+
+```text
+Debes solicitar al usuario su nombre y correo electrónico.
+
+Cuando el usuario te proporcione su nombre y correo, ejecuta tu función end_function con el esquema en formato JSON:
+{"nombre":[nombre],"correo":[correo]}
+```
+
+Luego, se puede acceder con `{{$memory.nombreVariable}}` para guardarla en un nodo Datum.
+
+## Ejemplos de prompts para un AI Task
+
+Los AI Task son peticiones a OpenAI/LLM preferido. Su prompt es más fácil de escribir y no requiere de utilizar palabras claves para terminar como `end_function`. Su objetivo siempre será cumplir lo que le dice el prompt y guardar la respuesta en formato JSON.
+
+### Redireccionar al usuario
+
+```text
+Debes procesar el mensaje del usuario, para decidir a que flujo se envía.
+
+El mensaje del usuario es: {{$message.text}}
+
+Existen 5 flujos:
+1. Tarjetas de crédito (emisión, información general sobre tarjetas o American Express / AMEX)
+2. Cuentas de ahorro y cuentas corrientes (aperturas e información general)
+3. Documentos (certificados, estados de cuenta)
+4. Consultas generales (consultas generales sobre el banco)
+5. Otro
+
+Intenta en lo posible ubicarlo en algún flujo, y solo si el mensaje es muy genérico, puedes elegir el 5 (otro).
+
+Genera el siguiente JSON: {flujo:[flujo]}.
+
+Donde flujo puede ser igual a "tarjetas", "cuentas", "documentos", "consultas" y "otro".
+
+Ejemplos:
+- Si usuario hace un consultas sobre tarjetas de crédito, terminas con {flujo:"tarjetas"}
+- Si usuario te pide un certificado bancario, terminas con {flujo:"documentos"}
+```
+
+La diferencia es que no se hace uso de `end_function`.
+
+## Resumen de Buenas Prácticas
+
+| Aspecto | Recomendación |
+|---------|----------------|
+| Claridad | Usa prompts directos y estructurados |
+| Lenguaje | Sé consistente en los términos (ej: "herramienta") |
+| Uso de JSON | Especifica con claridad el formato esperado |
+| Terminación | En AI Agents, usa `end_function` correctamente. En AI Task solo asegúrate de especificar el JSON. |
+| Contexto | Indica cómo evaluar entradas o referencias relevantes. |
+
+## Tipos de contenido y formato en prompts
+
+- Mantén un lenguaje consistente en todo el prompt.
+- Especifica claramente el formato de salida (JSON recomendado).
+- Si el flujo requiere terminar, define explícitamente el uso de `end_function`.ar
+
+## Diseño Inteligente de Prompts Condicionales
+
+Para obtener mejores resultados, es clave minimizar la cantidad de decisiones que debe tomar la IA, especialmente cuando no están directamente relacionadas con su objetivo principal. En lugar de cargar el prompt con múltiples instrucciones condicionales, es preferible preprocesar la lógica fuera del AI Agent, manteniendo el prompt limpio, enfocado y más efectivo.
+
+### Qué evitar
+
+Evita escribir prompts como este:
+
+> Si tienes datos en esta variable `{{$memory.variable}}`, entonces haz tal cosa, de lo contrario, sigue estas otras instrucciones.
+
+Este tipo de lógica agrega ambigüedad y ruido al prompt, lo cual puede dificultar la comprensión del modelo y disminuir la precisión de la respuesta.
+
+### Alternativa recomendada
+
+Usa lógica condicional previa en un nodo de tipo código para definir qué instrucciones debe seguir la IA antes de enviarle el prompt.
+
+Ejemplo:
+
+```javascript
+let promptCondicional = "Haz tal cosa primero";
+
+if($memory.get("variable")){
+  promptCondicional = "Mejor haz esto";
+}
+
+$memory.set("promptCondicional", promptCondicional);
+```
+
+Luego, en tu AI Agent, simplemente haz referencia a la variable procesada:
+
+```text
+Sigue estas instrucciones: {{$memory.promptCondicional}}
+```
+
+### Beneficios
+
+- Reduce la carga cognitiva del modelo
+- Disminuye el uso de tokens innecesarios
+- Aumenta la claridad del prompt
+- Mejora la consistencia de las respuestas
+
+Este enfoque ayuda a diseñar agentes más confiables y predecibles, especialmente cuando se combinan múltiples fuentes de entrada o condiciones dinámicas.
+
+> Para consideraciones sobre modelos (GPT-4.1, contextos largos, CoT y recordatorios de agente), consulta la `Guía general de AI Agents`.
+
+## Herramienta de Validación de Prompts
+
+Para facilitar la creación de prompts efectivos, puedes usar una herramienta en beta que actúa como asistente de pruebas. Si tu prompt no está funcionando como esperas o necesitas una guía rápida para comenzar, simplemente accede al siguiente enlace, escribe tu prompt u objetivo y sigue las sugerencias del asistente:
+
+[ChatGPT - Corrector de Prompts AI Agents](https://chatgpt.com/g/g-68127b80d72481918eca6f5b97bea57e-corrector-de-prompts-ai-agents)
+
+Esta herramienta está en fase beta, por lo que aún se encuentra en desarrollo. Sin embargo, es útil para detectar errores comunes, refinar instrucciones y validar si el prompt está bien estructurado antes de implementarlo en Brain Studio.
+
+## Recursos adicionales
+
+- [OpenAI Platform](https://platform.openai.com/playground) - Explora recursos de desarrollador, tutoriales, documentación de API y ejemplos dinámicos
+- [AI Playground](https://ai-sdk.dev/playground) - Compara modelos de IA lado a lado: OpenAI GPT, Anthropic Claude, Google Gemini, Llama, Mistral y más

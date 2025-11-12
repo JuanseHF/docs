@@ -1,0 +1,73 @@
+---
+title: "Acceso a Skills"
+description: "Aprende cómo funcionan las intenciones semánticas en el nodo start"
+---
+
+Por defecto, tu primera Skill se crea como **predeterminada**. Esto significa que todos los usuarios que escriban entrarán automáticamente a ese flujo cuando inicien una conversación.
+
+<Warning>
+  Puedes cambiar el Skill predeterminado desde el sidebar de navegación, seleccionando una Skill y haciendo clic en el menú de opciones.
+</Warning>
+
+## Intenciones
+
+Además del Skill predeterminado, puedes configurar **intenciones semánticas** en el nodo `start` de tus Skills. Las intenciones permiten redirigir automáticamente a los usuarios a diferentes flujos según el significado de sus mensajes, no solo por coincidencias exactas de palabras.
+
+### ¿Cómo funcionan las intenciones?
+
+Las intenciones semánticas utilizan inteligencia artificial para entender el significado detrás de lo que dice el usuario, permitiendo que frases diferentes pero con el mismo propósito hagan match con una misma intención.
+
+Por ejemplo, si defines una intención como **"Abrir cuenta bancaria"**, el sistema reconocerá automáticamente mensajes como:
+
+- "Hola, quisiera abrir una cuenta de ahorros"
+- "Quiero abrir una cuenta bancaria"
+- "Necesito crear una cuenta en el banco"
+- "Me gustaría tener una cuenta nueva"
+
+Todos estos mensajes, aunque usen palabras diferentes, expresan la misma intención y serán redirigidos al flujo correspondiente.
+
+### Prioridad de las intenciones
+
+**Las intenciones tienen prioridad sobre el Skill predeterminado.** Cuando un usuario envía un mensaje:
+
+1. El sistema primero verifica si hay alguna intención que haga match con el mensaje
+2. Si encuentra un match, redirige al usuario al flujo de esa intención
+3. Si no hay ningún match, el usuario es dirigido automáticamente al Skill predeterminado
+
+Esto te permite crear múltiples puntos de entrada a diferentes flujos mientras mantienes un flujo por defecto para usuarios que no expresen una intención específica.
+
+## Consideraciones importantes
+
+Aunque las intenciones semánticas son poderosas, es importante configurarlas correctamente para evitar problemas:
+
+### Problemas potenciales
+
+Si no defines tus intenciones con suficiente especificidad, pueden ocurrir matches no deseados. Por ejemplo:
+
+**Intención mal configurada:** "Abrir cuenta bancaria"
+
+**Problema:** Esta intención podría hacer match con mensajes no relacionados como:
+- "Abrir mi app"
+- "Abrir el menú"
+- "Abrir una nueva ventana"
+
+Esto sucede porque la palabra "abrir" crea una relación semántica que puede confundir al sistema.
+
+### Mejores prácticas
+
+Para evitar estos problemas:
+
+1. **Sé específico**: En lugar de "Abrir cuenta", usa "Abrir cuenta bancaria" o "Abrir cuenta de ahorros"
+2. **Agrega contexto**: Incluye palabras clave relevantes que ayuden a distinguir la intención
+3. **Prueba diferentes variaciones**: Verifica que tus intenciones no hagan match con mensajes no relacionados
+4. **Usa ejemplos negativos**: Si es posible, especifica qué mensajes NO deben hacer match
+
+### Ejemplo mejorado
+
+**Intención mejor configurada:** "Abrir cuenta bancaria de ahorros o corriente"
+
+Esta intención es más específica y reduce la probabilidad de matches no deseados, ya que incluye contexto adicional que ayuda al sistema a entender mejor la intención real del usuario.
+
+<Tip>
+  Siempre prueba tus intenciones con diferentes variaciones de mensajes para asegurarte de que funcionan correctamente y no generan matches no deseados.
+</Tip>

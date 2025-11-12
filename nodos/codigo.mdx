@@ -1,0 +1,206 @@
+---
+title: "Código"
+description: "Nodo para ejecutar código personalizado en tus flujos"
+---
+
+## Introducción
+
+El nodo Código te permite ejecutar código JavaScript personalizado dentro de tus flujos de conversación, dándote la flexibilidad de realizar operaciones complejas, transformaciones de datos y lógica personalizada que no pueden ser realizadas con los nodos estándar.
+
+## Acceso a variables
+
+Dentro del nodo código puedes acceder y modificar diferentes tipos de variables usando métodos específicos:
+
+### Contexto
+
+El contexto guarda variables que persisten únicamente durante la ejecución actual del flujo. Para más información, consulta la documentación de [Contexto](/variables/context). Usa estos métodos:
+
+```javascript
+// Obtener una variable del contexto
+const nombre = $context.get('nombre')
+
+// Obtener con valor por defecto si no existe
+const nombre = $context.get('nombre', 'Juan')
+
+// Guardar una variable en el contexto
+$context.set('ultimoPedido.estado', 'entregado')
+
+// Guardar un objeto completo
+const usuario = { nombre: 'Juan', plan: 'gold' }
+$context.set('usuario', usuario)
+
+// Guardar un array
+const pedidos = ['PED-123', 'PED-456']
+$context.set('pedidos', pedidos)
+```
+
+### Memoria
+
+La memoria guarda variables que persisten entre skills, tools y nodos durante 24 horas. Para más información, consulta la documentación de [Memory](/variables/memory). Usa estos métodos:
+
+```javascript
+// Obtener una variable de memoria
+const nombre = $memory.get('nombre')
+
+// Obtener con valor por defecto si no existe
+const nombre = $memory.get('nombre', 'Juan')
+
+// Guardar una variable en memoria
+$memory.set('ultimoPedido.estado', 'entregado')
+
+// Guardar un objeto completo
+const usuario = { nombre: 'Juan', plan: 'gold' }
+$memory.set('usuario', usuario)
+
+// Guardar un array
+const pedidos = ['PED-123', 'PED-456']
+$memory.set('pedidos', pedidos)
+```
+
+### Usuario
+
+Accede a información del contacto que está interactuando con tu flujo. Para más información, consulta la documentación de [User](/variables/user):
+
+```javascript
+// Obtener el ID del usuario
+const userId = $user.get('id')
+
+// Obtener el nombre del usuario
+const userName = $user.get('names')
+```
+
+### Mensaje
+
+Accede al último mensaje que envió el usuario. Para más información, consulta la documentación de [Message](/variables/message):
+
+```javascript
+// Obtener el texto del mensaje
+const texto = $message.get('text')
+
+// Obtener el tipo de mensaje (TEXT, IMAGE, AUDIO, VIDEO, LOCATION, FILE)
+const tipo = $message.get('type')
+
+// Obtener la URL del archivo adjunto
+const urlAdjunto = $message.get('mediaUrl')
+
+// Obtener coordenadas de ubicación
+const lat = $message.get('lat')
+const lng = $message.get('lng')
+```
+
+### Input/Output
+
+Cuando trabajas con tools, puedes recibir inputs y retornar outputs. Para más información, consulta la documentación de [Input/Output](/variables/input-output):
+
+```javascript
+// Obtener un input
+const ciudad = $input.get('ciudad')
+
+// Obtener un input con valor por defecto
+const ciudad = $input.get('ciudad', 'Quito')
+
+// Establecer un output
+const data = $memory.get('apiResponse')
+$output.set('data', data)
+```
+
+### Respuestas HTTP
+
+Si guardaste una respuesta de un nodo API, puedes accederla y manipularla:
+
+```javascript
+// Obtener la respuesta HTTP guardada
+let apiResponse = $context.getHttpResponse('apiResponse')
+
+// Convertir a JSON si es necesario
+apiResponse = apiResponse.json()
+
+// Manipular los datos
+let usuarioNombre = apiResponse.data.usuario.nombre
+let status = apiResponse.status
+
+// Guardar en memoria
+$memory.usuarioNombre = usuarioNombre
+$memory.status = status
+```
+
+<Warning>
+La llave que uses en `$context.getHttpResponse('apiResponse')` debe coincidir exactamente con la que especificaste en el nodo API en el campo "guardar respuesta".
+</Warning>
+
+## Utilidades disponibles
+
+El nodo código incluye varias utilidades que puedes usar en tu código:
+
+### Logger
+
+El logger es muy útil para loggear variables dentro de un flujo y facilitar el debugging:
+
+```javascript
+$utils.logger.log('nombreUsuario', nombreUsuario)
+$utils.logger.log('resultado', resultado)
+$utils.logger.log('datos', { id: 123, estado: 'activo' })
+```
+
+### Crypto
+
+Crypto proporciona funcionalidades criptográficas comunes como hash y cifrado:
+
+```javascript
+// Crear un hash
+$utils.crypto.createHash(algorithm)
+
+// Crear un HMAC
+$utils.crypto.createHmac(algorithm, key)
+
+// Generar bytes aleatorios
+$utils.crypto.randomBytes(size)
+
+// Derivación de clave basada en contraseña
+$utils.crypto.pbkdf2(password, salt, iterations, keylen, digest)
+
+// Cifrado
+$utils.crypto.createCipheriv(algorithm, key, iv)
+
+// Descifrado
+$utils.crypto.createDecipheriv(algorithm, key, iv)
+
+// Generar par de claves
+$utils.crypto.generateKeyPair(type, options)
+
+// Firmar datos
+$utils.crypto.sign(algorithm, data, privateKey)
+
+// Verificar firma
+$utils.crypto.verify(algorithm, data, publicKey, signature)
+```
+
+### Lodash
+
+Lodash es una biblioteca moderna de utilidades JavaScript que ofrece modularidad, rendimiento y extras, facilitando el trabajo con arrays, números, objetos, cadenas, etc.
+
+```javascript
+// Dividir array en chunks
+$utils._.chunk(array, size)
+
+// Debounce de funciones
+$utils._.debounce(func, wait)
+
+// Clonar profundamente
+$utils._.cloneDeep(value)
+
+// Fusionar objetos
+$utils._.merge(object, sources)
+
+// Obtener valor de objeto por path
+$utils._.get(object, path, [defaultValue])
+
+// Obtener valores únicos de un array
+$utils._.uniq(array)
+
+// Filtrar colección
+$utils._.filter(collection, predicate)
+
+// Mapear colección
+$utils._.map(collection, iteratee)
+```

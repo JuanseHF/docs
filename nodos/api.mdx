@@ -1,0 +1,138 @@
+---
+title: "API"
+description: "Nodo para realizar llamadas a APIs externas con configuración completa"
+---
+
+## Introducción
+
+El nodo API te permite realizar llamadas a APIs externas desde tus flujos de conversación, permitiéndote integrar servicios externos y obtener datos en tiempo real. Este nodo ofrece una interfaz completa de configuración que te permite definir todos los aspectos de tu petición HTTP.
+
+## Métodos HTTP disponibles
+
+El nodo API soporta los siguientes métodos HTTP:
+
+- **GET**: Para obtener datos del servidor
+- **POST**: Para crear nuevos recursos
+- **PUT**: Para actualizar recursos existentes
+- **DELETE**: Para eliminar recursos
+- **PATCH**: Para realizar actualizaciones parciales
+
+## URL
+
+Define la URL del endpoint que deseas llamar. Puedes inyectar variables directamente en la URL usando la sintaxis de doble llave:
+
+```
+https://api.ejemplo.com/usuarios/{{$user.id}}/pedidos/{{$memory.pedidoId}}
+```
+
+Las variables se evaluarán dinámicamente antes de realizar la petición, permitiéndote construir URLs dinámicas basadas en el contexto de la conversación.
+
+## Parámetros
+
+Puedes agregar parámetros de consulta (query parameters) a tu petición desde la interfaz de usuario. Los parámetros se configuran como pares clave-valor, y puedes usar variables en los valores:
+
+```
+usuario: {{$user.id}}
+fecha: {{$context.fecha}}
+```
+
+Los parámetros se agregarán automáticamente a la URL en el formato estándar `?param1=valor1&param2=valor2`.
+
+## Headers
+
+Puedes agregar headers personalizados a tu petición desde la interfaz de usuario. Los headers se configuran como pares clave-valor, y puedes usar variables en los valores:
+
+```
+Content-Type: application/json
+X-API-Key: {{$memory.apiKey}}
+Custom-Header: {{$user.id}}
+```
+
+Los headers se agregan y gestionan directamente desde la UI del nodo, permitiéndote definir múltiples headers y usar variables dinámicas en sus valores.
+
+## Autenticación
+
+El nodo API soporta dos tipos de autenticación:
+
+### Autenticación básica
+
+Configura un usuario y contraseña para autenticación HTTP básica. El sistema codificará automáticamente las credenciales en base64 y las incluirá en el header `Authorization`.
+
+### Bearer Token
+
+Configura un token de acceso que se enviará en el header `Authorization` con el formato:
+
+```
+Authorization: Bearer <tu-token>
+```
+
+## Body
+
+Para métodos que requieren un cuerpo de petición (POST, PUT, PATCH), puedes configurar el body en diferentes formatos: JSON, XML, texto plano, multipart form y URL encoded.
+
+Puedes usar variables dentro del body. Ejemplo con JSON:
+
+```json
+{
+  "usuario_id": "{{$user.id}}",
+  "correo": "{{$memory.correo}}",
+  "nombre": "{{$user.names}}"
+}
+```
+
+## Respuesta
+
+Si quieres acceder a la respuesta del API dentro del flujo, es necesario que actives el campo **guardar respuesta** en el nodo, ubicado abajo del método y la URL. Aquí debes especificar una llave única para identificar la respuesta.
+
+### Acceder a la respuesta sin manipulación
+
+Si no necesitas manipular la data, puedes obtenerla directamente usando la llave que especificaste:
+
+```
+{{$context.apiResponse}}
+```
+
+### Manipular la respuesta en un nodo Código
+
+Si necesitas manipular la respuesta JSON dentro de un nodo código, puedes accederla de la siguiente manera:
+
+```javascript
+let apiResponse = $context.getHttpResponse('apiResponse')
+apiResponse = apiResponse.json()
+
+// Ahora puedes manipular el JSON
+let usuarioNombre = apiResponse.data.usuario.nombre
+let status = apiResponse.status
+
+// Guardar en memoria
+$memory.usuarioNombre = usuarioNombre
+$memory.status = status
+```
+
+<Warning>
+  Es importante que la misma llave que usas en `$context.getHttpResponse('apiResponse')` sea la que especificaste dentro del nodo API en el campo "guardar respuesta". Si especificaste `'miRespuesta'` en el nodo, debes usar `$context.getHttpResponse('miRespuesta')`.
+</Warning>
+
+## Configuración avanzada (Settings)
+
+El nodo API incluye configuraciones avanzadas para controlar el comportamiento de las peticiones:
+
+### Activar certificado SSL
+
+Habilita la conexión segura mediante SSL/TLS, protegiendo la comunicación entre el cliente y el servidor con cifrado. Activa esta opción cuando trabajes con APIs que requieren HTTPS.
+
+### Timeout (ms)
+
+Define el tiempo máximo de espera en milisegundos antes de considerar que la petición ha fallado por timeout. Por ejemplo, `30000` representa 30 segundos.
+
+### Activar reintentos
+
+Permite que el servicio intente reenviar solicitudes fallidas de manera automática si ocurre un error o fallo de conexión. Útil para manejar errores temporales de red.
+
+### Restablecer tiempo de espera
+
+Ajusta o reinicia el tiempo límite de espera para las respuestas del servidor, definiendo cuánto tiempo el sistema espera antes de considerar la solicitud fallida.
+
+### Reintentar retraso
+
+Define el tiempo de espera entre reintentos cuando la opción de reintentos está activada. Puedes configurar diferentes intervalos o desactivar el retraso.
