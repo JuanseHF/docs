@@ -5,38 +5,37 @@ description: "Configura un AI Agent que recolecta datos de tus usuarios"
 
 En esta guía replicarás el flujo de `Tu Primer Skill`, pero usando un nodo AI Agent para solicitar y almacenar datos estructurados del usuario.
 
-### Arrastra un nodo AI Agent
+<Steps>
+  <Step title="Arrastra un nodo AI Agent">
+    Desde el nodo `start`, arrastra una conexión y elige el nodo `AI Agent`. En el campo de instrucción pega:
 
-Desde el nodo `start`, arrastra una conexión y elige el nodo `AI Agent`. En el campo de instrucción pega:
+    ```txt title="ai-agent.txt" wrap
+    Debes solicitar al usuario su nombre y correo electrónico.
 
-```txt title="ai-agent.txt" wrap
-Debes solicitar al usuario su nombre y correo electrónico.
+    Cuando el usuario te proporcione su nombre y correo, finaliza la interacción con el esquema en formato JSON:
 
-Cuando el usuario te proporcione su nombre y correo, finaliza la interacción con el esquema en formato JSON:
+    {"nombre": [nombre], "correo": [correo]}
+    ```
 
-{"nombre": [nombre], "correo": [correo]}
-```
+    Todos nuestros AI Agents pueden terminar la interacción con un formato estructurado que guarda la información en memoria. Más detalles en la guía de [variables](/variables/guia-rapida).
+  </Step>
+  <Step title="Guarda la respuesta">
+    En la sección inferior de la configuración del nodo, escribe `datosUsuarios` en el campo **Guardar respuesta como**. Esto almacenará el JSON de salida en la memoria bajo esa clave.
+  </Step>
+  <Step title="Conecta un nodo texto">
+    Desde la salida del nodo AI, conecta un nodo `texto` con el siguiente contenido:
 
-Todos nuestros AI Agents pueden terminar la interacción con un formato estructurado que guarda la información en memoria. Más detalles en la guía de [variables](/variables/guia-rapida).
+    ```txt title="texto.txt" wrap
+    Bienvenido, {{$memory.datosUsuarios.nombre}}. Su correo es {{$memory.datosUsuarios.correo}}
+    ```
 
-### Guarda la respuesta
+    Este texto usa la variable en memoria `datosUsuarios` para personalizar la respuesta con los datos entregados por el agente.
+  </Step>
+  <Step title="Pruébalo">
+    En la esquina superior derecha, haz clic en **Probar**. Interactúa con el flujo desde el tester o mediante WhatsApp para verificar que el AI Agent pida los datos y que el nodo texto muestre la información almacenada.
 
-En la sección inferior de la configuración del nodo, escribe `datosUsuarios` en el campo **Guardar respuesta como**. Esto almacenará el JSON de salida en la memoria bajo esa clave.
-
-### Conecta un nodo texto
-
-Desde la salida del nodo AI, conecta un nodo `texto` con el siguiente contenido:
-
-```txt title="texto.txt" wrap
-Bienvenido, {{$memory.datosUsuarios.nombre}}. Su correo es {{$memory.datosUsuarios.correo}}
-```
-
-Este texto usa la variable en memoria `datosUsuarios` para personalizar la respuesta con los datos entregados por el agente. 
-
-### Pruébalo
-
-En la esquina superior derecha, haz clic en **Probar**. Interactúa con el flujo desde el tester o mediante WhatsApp para verificar que el AI Agent pida los datos y que el nodo texto muestre la información almacenada.
-
-<Note>
-  Asegúrate de que el nodo AI Agent guarde la respuesta como `datosUsuarios` para que el nodo texto pueda acceder a los datos.
-</Note>
+    <Note>
+      Asegúrate de que el nodo AI Agent guarde la respuesta como `datosUsuarios` para que el nodo texto pueda acceder a los datos.
+    </Note>
+  </Step>
+</Steps>
