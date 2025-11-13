@@ -38,8 +38,9 @@
             "group": "Agentes IA",
             "icon": "robot",
             "pages": [
-              "essentials/settings",
-              "essentials/navigation"
+              "agentes-ia",
+              "agentes-ia/prompting",
+              "agentes-ia/tools"
             ]
           },
           {
@@ -60,6 +61,15 @@
               "ai-tools/cursor",
               "ai-tools/claude-code",
               "ai-tools/windsurf"
+            ]
+          },
+          {
+            "group": "Facturación",
+            "icon": "credit-card",
+            "pages": [
+              "billing/introduccion",
+              "billing/precios",
+              "billing/reembolsos"
             ]
           }
         ]
