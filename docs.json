@@ -23,6 +23,14 @@
             ]
           },
           {
+            "group": "Agentes IA",
+            "icon": "robot",
+            "pages": [
+              "agentes-ia",
+              "agentes-ia/prompting"
+            ]
+          },
+          {
             "group": "Nodos",
             "icon": "sitemap",
             "pages": [
@@ -32,15 +40,6 @@
               "nodos/codigo",
               "nodos/datum",
               "nodos/otros"
-            ]
-          },
-          {
-            "group": "Agentes IA",
-            "icon": "robot",
-            "pages": [
-              "agentes-ia",
-              "agentes-ia/prompting",
-              "agentes-ia/tools"
             ]
           },
           {

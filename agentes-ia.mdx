@@ -1,32 +1,54 @@
 ---
 title: "Guía general"
-description: "Diseña, entrena y optimiza agentes conversacionales con Brain Studio"
+description: "Configura instrucciones, modelos, temperatura, bases de conocimiento, MCPs y herramientas para tus AI Agents"
 ---
 
-## Domina tus agentes inteligentes
+## Instrucción
 
-Los agentes de IA son el corazón de Brain Studio. Aquí aprenderás a definir sus objetivos, controlar su comportamiento y conectarlos con el resto de tu flujo conversacional.
+La instrucción define el comportamiento base del agente: qué rol adopta, qué tono utiliza y qué pasos sigue antes de responder. Asegúrate de que sea breve, concreta y libre de ambigüedades. Si necesitas profundizar en la redacción, consulta la guía de buenas prácticas en `@prompting.mdx`.
 
-<CardGroup cols={2}>
-  <Card title="Configura tu primer agente" icon="sparkles" href="/skills-con-ai">
-    Crea un agente capaz de recopilar y estructurar datos de tus usuarios en minutos.
-  </Card>
-  <Card title="Ajustes globales" icon="sliders" href="/essentials/settings">
-    Personaliza el comportamiento y estilo de tus agentes desde la configuración central.
-  </Card>
-  <Card title="Diseña la experiencia" icon="compass" href="/essentials/navigation">
-    Organiza la navegación para que tus usuarios siempre encuentren al agente adecuado.
-  </Card>
-  <Card title="Mejores prácticas" icon="lightbulb" href="/tu-primer-skill">
-    Repasa recomendaciones para lanzar agentes confiables y listos para producción.
-  </Card>
-</CardGroup>
+[Ver recomendaciones y ejemplos de prompting](/agentes-ia/prompting)
 
-## Próximos pasos
+## Modelo
 
-Una vez que tengas a tus agentes funcionando, continúa explorando cómo los nodos y las variables potencian sus respuestas y cómo las herramientas de IA aceleran tu trabajo diario.
+Escoge el modelo que mejor se ajuste al tipo de interacción que buscas. Considera latencia, costo y complejidad de las tareas antes de seleccionarlo.
 
-<Tip>
-  Recuerda validar tus agentes en ambientes de prueba antes de llevarlos a producción.
-</Tip>
+### Modelos disponibles
+
+- **Llama 4 Scout**: modelo ágil y de baja latencia, ideal para ideas rápidas e interacciones ligeras.
+- **GPT 4.1 Mini**: variante simplificada de GPT-4.1 optimizada para respuestas rápidas con menor demanda de recursos.
+- **Claude 3.5 Sonnet**: excelente para tareas complejas que requieren textos más elaborados y contextos extensos.
+- **GPT 4-o (Azure)**: versión de GPT 4-o alojada en Azure, enfocada en estabilidad y rendimiento en entornos empresariales.
+- **Llama 4 Maverick**: modelo de alto rendimiento diseñado para razonamientos exigentes y resolución multistep.
+- **GPT 4.1**: evolución refinada de GPT-4, con mejor comprensión, razonamiento y precisión.
+- **GPT 4-o Mini**: versión más rápida y ligera de GPT 4-o, orientada a casos donde prima la velocidad.
+
+## Temperatura
+
+La temperatura controla el nivel de creatividad del modelo. Utiliza valores entre `0` y `1`: en `0` obtendrás respuestas deterministas y consistentes; conforme te acerques a `1`, las respuestas serán más creativas y variadas. Ajusta este parámetro según necesites precisión o exploración.
+
+## Bases de conocimiento
+
+Refuerza al agente con documentación específica para que responda con información actualizada y verificable.
+
+- **Archivos**: carga archivos de hasta 2 MB en formatos `.pdf` o `.csv`.
+- **URLs**: añade enlaces cuya descarga no supere los 5 MB. Verifica que el contenido sea accesible públicamente.
+
+## MCPs
+
+Conecta Model Context Protocols (MCPs) para ampliar las capacidades del agente. Cada integración requiere:
+
+- **URL del endpoint** al que se realizará la consulta.
+- **Headers opcionales** con credenciales o metadatos necesarios para la autenticación.
+- **Nombre identificador** para reconocer el MCP dentro del estudio.
+- **Descripción** que resuma qué información o acciones ofrece.
+
+## Tools
+
+Las herramientas permiten que el agente ejecute acciones externas. Puedes configurarlas de dos formas:
+
+- **Tools creadas en la plataforma**: defínelas directamente en Brain Studio para integraciones reutilizables y gestionadas.
+- **Llamadas HTTP**: especifica un endpoint, método y esquema de entrada/salida para realizar peticiones puntuales a tus servicios.
+
+Combina estos elementos para que el agente seleccione automáticamente la herramienta adecuada durante la conversación.
 
