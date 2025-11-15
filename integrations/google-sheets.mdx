@@ -1,0 +1,54 @@
+---
+title: "Google Sheets"
+description: "Sincroniza datos de tus flujos con hojas de cálculo de Google."
+---
+
+<img
+  src="/images/marketplace/google_sheets.webp"
+  alt="Google Sheets"
+  style={{ width: '120px', borderRadius: '1rem', marginBottom: '1.5rem' }}
+/>
+
+## ¿Qué puedes hacer?
+
+- Registrar leads, métricas y resultados de tus Skills sin escribir código.
+- Compartir la información con tu equipo en tiempo real desde una hoja de cálculo.
+- Disparar automatizaciones adicionales con Apps Script o Zapier a partir de los datos almacenados.
+
+## Configuración rápida
+
+1. Crea un proyecto en Google Cloud Console y habilita la **Google Sheets API**.
+2. Genera credenciales de servicio y comparte la hoja con el correo del servicio.
+3. Añade la integración en Brain Studio y pega las credenciales JSON cuando se te solicite.
+4. Define qué columnas quieres completar desde tus flujos y asigna cada valor a una propiedad.
+
+### Create events JSON example
+
+Usa este payload para enviar la información recopilada desde tu Sheet hacia una automatización que cree eventos en Google Calendar.
+
+```json
+{
+  "summary": "Demo de integración",
+  "description": "Evento creado a partir de datos guardados en Google Sheets.",
+  "start": {
+    "dateTime": "2025-01-15T10:00:00-03:00"
+  },
+  "end": {
+    "dateTime": "2025-01-15T10:30:00-03:00"
+  },
+  "attendees": [
+    { "email": "cliente@example.com" },
+    { "email": "operaciones@example.com" }
+  ],
+  "conferenceData": {
+    "createRequest": {
+      "requestId": "sheet-sync-demo",
+      "conferenceSolutionKey": { "type": "hangoutsMeet" }
+    }
+  }
+}
+```
+
+> Este ejemplo asume que previamente sincronizaste los datos en Google Sheets y ahora los reusas para componer el evento.
+
+

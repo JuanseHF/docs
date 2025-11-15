@@ -1,0 +1,59 @@
+---
+title: "Google Calendar"
+description: "Crea y gestiona eventos automáticamente desde tus flujos de Brain Studio."
+---
+
+<img
+  src="/images/marketplace/google_calendar.webp"
+  alt="Google Calendar"
+  style={{ width: '120px', borderRadius: '1rem', marginBottom: '1.5rem' }}
+/>
+
+## Casos de uso
+
+- Programar reuniones apenas un cliente confirme su disponibilidad en un flujo conversacional.
+- Generar eventos de seguimiento para tu equipo comercial con recordatorios automáticos.
+- Sincronizar la agenda del soporte técnico cada vez que se abra un ticket prioritario.
+
+## Configuración básica
+
+1. Crea un proyecto en Google Cloud Console y habilita la **Calendar API**.
+2. Genera credenciales de servicio y comparte el calendario con el correo del servicio.
+3. Agrega la integración en Brain Studio y guarda las credenciales JSON.
+4. Define qué datos de tus flujos completarán el resumen, descripción, invitados y horarios del evento.
+
+### Create events JSON example
+
+```json
+{
+  "summary": "Onboarding Brain Studio",
+  "description": "Sesión de implementación con el cliente ACME.",
+  "start": {
+    "dateTime": "2025-01-16T14:00:00-03:00"
+  },
+  "end": {
+    "dateTime": "2025-01-16T15:00:00-03:00"
+  },
+  "attendees": [
+    { "email": "cliente@example.com" },
+    { "email": "success@example.com" }
+  ],
+  "conferenceData": {
+    "createRequest": {
+      "requestId": "brain-studio-onboarding",
+      "conferenceSolutionKey": { "type": "hangoutsMeet" }
+    }
+  },
+  "reminders": {
+    "useDefault": false,
+    "overrides": [
+      { "method": "email", "minutes": 24 * 60 },
+      { "method": "popup", "minutes": 10 }
+    ]
+  }
+}
+```
+
+> Reemplaza los valores de `dateTime`, asistentes y recordatorios según las respuestas de tus usuarios dentro del flujo.
+
+
